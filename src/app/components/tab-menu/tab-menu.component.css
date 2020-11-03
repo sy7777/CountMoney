@@ -1,0 +1,27 @@
+*{
+  text-shadow: 1px 1px 1px #fff;
+}
+.tab-bar{
+  position: fixed;
+  height: 55px;
+  width: 100%;
+  display: flex;
+  bottom: 0;
+  justify-content: space-between;
+  text-align: center;
+  background-color: burlywood;
+}
+.tab-item{
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+}
+.tab-item i{
+  font-size: 19px;
+}
+.tab-item.active{
+  border: 1px solid rgb(189, 157, 115);
+  color: rgb(149, 125, 180);;
+}
