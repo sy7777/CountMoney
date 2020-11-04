@@ -1,5 +1,5 @@
 *{
-  text-shadow: 1px 1px 1px #fff;
+  text-shadow: 0.5px 0.6px 0.5px #dbd3ca;
 }
 .tab-bar{
   position: fixed;
@@ -9,7 +9,7 @@
   bottom: 0;
   justify-content: space-between;
   text-align: center;
-  background-color: burlywood;
+  background-color: #968c83;
 }
 .tab-item{
   width: 25%;
@@ -23,5 +23,5 @@
 }
 .tab-item.active{
   border: 1px solid rgb(189, 157, 115);
-  color: rgb(149, 125, 180);;
+  color: #fff5ea;;
 }

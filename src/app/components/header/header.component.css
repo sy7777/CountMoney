@@ -1,14 +1,15 @@
 .header{
   width: 100%;
   height: 55px;
-  background-color: burlywood;
+  background-color: #968c83;
   display: flex;
   justify-content: space-between;
   line-height: 55px;
+  text-align: center;
 }
 .header-start{
-  padding-left: 10px;
-  flex: 2;
+  /* padding-left: 10px; */
+  flex: 1.5;
 }
 .header-title{
   font-size: 18px;
@@ -16,13 +17,17 @@
   flex:3;
 }
 .header-end{
-  padding-right: 10px;
+  /* padding-right: 10px; */
   align-items: center;
-  font-size: 18px;
+  font-size: 17px;
+  font-weight: 100;
   flex: 1;
+  text-align: center;
 }
-.header-end .fas{
+.header-end .calendar{
   background:none;
   line-height: 55px;
+  float: right ;
 }
+
 

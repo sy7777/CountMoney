@@ -1,0 +1,37 @@
+.transaction-detail{
+  width: 100%;
+  /* background-color: #fff5ea; */
+}
+.label{
+
+}
+.transaction-summary{
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  background-color: #d6d2c4;
+  padding:9px;
+}
+.transaction-items{
+  flex: 1;
+}
+.single-item{
+  height: 18px;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  align-items: center;
+  margin-top: 4px;
+  background-color: #f7dad9;
+  padding: 4px;
+  /* padding-left: 14px; */
+}
+.single-item .label:nth-child(1){
+  flex:1;
+}
+.single-item .label:nth-child(2){
+  flex:3;
+}
+.single-item .label:nth-child(3){
+  flex:2;
+}

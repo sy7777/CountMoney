@@ -1,5 +1,15 @@
 <div class="transaction-detail">
-  <div class="month">11月</div>
-  <div class="cash-in">本月收入：</div>
-  <div class="cash-out">本月支出：</div>
+  <div class="transaction-summary">
+    <div class="month">{{month}}</div>
+    <!-- <div class="cash-in">Expense：400元</div>
+    <div class="cash-out">Income：100元</div> -->
+    <div class="cash-out">Balance：{{totalMoney | currency}}</div>
+  </div>
+  <div class="transaction-items">
+    <div class="single-item" *ngFor="let item of transactionList; let i = index;">
+      <i [class]="item.icon"></i>
+      <div class="label trans-name">{{item.name}}</div>
+      <div type="text" class="label plus-amount">{{item.amount | currency}}</div>
+    </div>
+  </div>
 </div>

@@ -1,7 +1,8 @@
 import { filter, map, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { TransmitService } from 'src/app/services/transmit.service';
 
 @Component({
   selector: 'app-header',
@@ -12,8 +13,10 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 @UntilDestroy()
 export class HeaderComponent implements OnInit {
   title: string = '';
+  date: any = '';
   calendar: boolean;
-  date:string;
+  pickTime: string = '';
+
   state: any = {
     en: true,
     show: false,
@@ -28,14 +31,18 @@ export class HeaderComponent implements OnInit {
     onSelect: undefined,
   };
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    public service: TransmitService
+  ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.router.events
       .pipe(
         untilDestroyed(this),
         filter((event) => event instanceof NavigationEnd),
-        map((event) => this.route),
+        map(() => this.route),
         map((route) => {
           return route?.firstChild;
         }),
@@ -45,7 +52,11 @@ export class HeaderComponent implements OnInit {
         this.title = data?.title;
         this.calendar = data?.calendar;
         this.date = new Date().toDateString();
+        // this.date = new Date();
+        this.service.info = this.date;
       });
+      console.log(this.date);
+
   }
 
   initPara() {
@@ -62,7 +73,7 @@ export class HeaderComponent implements OnInit {
         onSelect: undefined,
         showShortcut: false,
         defaultValue: undefined,
-      }
+      },
     };
   }
 
@@ -76,14 +87,20 @@ export class HeaderComponent implements OnInit {
   }
 
   triggerConfirm(value) {
-    const { startDate, endDate } = value;
+    const { startDate } = value;
     this.state = {
       ...this.state,
-      show: false
+      show: false,
     };
     this.date = startDate;
+    // this.pickTime = this.date.getTime().format('yyyy/MM/dd');
+    this.pickTime = this.date.toDateString();
+    this.changeInfo(this.pickTime);
   }
 
+  changeInfo(date){
+    this.service.changeInfo(date);
+  }
   triggerSelectHasDisableDate(dates) {
     console.warn('onSelectHasDisableDate', dates);
   }
