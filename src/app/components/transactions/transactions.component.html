@@ -7,7 +7,7 @@
   </div>
   <div class="transaction-items">
     <div class="single-item" *ngFor="let item of transactionList; let i = index;">
-      <i [class]="item.icon"></i>
+      <i [class]="item.path"></i>
       <div class="label trans-name">{{item.name}}</div>
       <div type="text" class="label plus-amount">{{item.amount | currency}}</div>
     </div>

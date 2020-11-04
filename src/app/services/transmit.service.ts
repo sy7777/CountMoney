@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -8,11 +8,13 @@ export class TransmitService {
   public info: any= 'serTime';
   public currentDate:any = new Date().getUTCMonth()+1;
 
-
-  public infoSource = new BehaviorSubject<string>(this.currentDate);
+  public infoSource = new Subject<string>();
   constructor(){}
   changeInfo(msg:any):void{
     this.infoSource.next(msg);
+  }
+  getPickTime(){
+    return this.infoSource.asObservable();
   }
 
 }

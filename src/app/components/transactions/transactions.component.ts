@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TransmitService } from 'src/app/services/transmit.service';
 
 @Component({
@@ -6,17 +7,16 @@ import { TransmitService } from 'src/app/services/transmit.service';
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.css'],
 })
+@UntilDestroy()
+
 export class TransactionsComponent implements OnInit {
   public month: any;
   itemAmount: number;
   totalMoney: number = 0;
-  /*   transMonthList = [
-    {date: `${this.month}`, }
-  ]; */
   transactionList = [
-    { icon: 'label fab fa-amazon', name: '亚马逊购物', amount: '-60' },
-    { icon: 'label fas fa-shopping-cart', name: '购物', amount: '-40' },
-    { icon: 'label fas fa-credit-card', name: '工资', amount: '+400' },
+    { path: 'label fab fa-amazon', name: '亚马逊购物', amount: '-60' },
+    { path: 'label fas fa-shopping-cart', name: '购物', amount: '-40' },
+    { path: 'label fas fa-credit-card', name: '工资', amount: '+400' },
   ];
   transAmoutList = [];
 
@@ -24,11 +24,8 @@ export class TransactionsComponent implements OnInit {
 
   ngOnInit() {
     this.month = new Date().toDateString();
-    // console.log(this.month);
-
-    /*     this.month = this.service.info.getMonth()+1;
-    console.log(this.month); */
-    this.service.infoSource.subscribe((msg) => {
+    this.service.getPickTime().pipe(untilDestroyed(this)
+      ).subscribe((msg) => {
       this.month = msg;
       // console.log(this.month);
     });

@@ -1,2 +1,37 @@
-<div class="sub-title">Add your transaction</div>
-<Grid [activeStyle]="false" [data]="data" (onClick)="click($event)"></Grid>
+<div class="sub-title">
+  <InputItem
+    [type]="'money'"
+    [clear]="true"
+    [placeholder]="'Enter Amount'"
+    [content]="content"
+  >
+    <ng-template #content>
+      <div
+        style="background-image:url({{this.pickIcon}}); background-size:contain; height:22px; width: 22px "
+      ></div>
+    </ng-template>
+  </InputItem>
+</div>
+<Tabs
+  [page]="2"
+  [useOnPan]="true"
+  [swipeable]="true"
+  [activeTab]="index"
+  [tabBarActiveTextColor]="'#1890ff'"
+  (onTabClick)="onTabClick($event)"
+>
+  <TabPane [title]="titleTemplate">
+    <ng-template #titleTemplate>
+      <div>Cash Out</div>
+    </ng-template>
+    <Grid [data]="outIcon" (onClick)="click($event)"></Grid>
+  </TabPane>
+  <TabPane [title]="titleTemplate1">
+    <ng-template #titleTemplate1>
+      <!-- <Badge [text]="'今日(20)'"> -->
+      <div>Cash In</div>
+      <!-- </Badge> -->
+    </ng-template>
+    <Grid [data]="inIcon" (onClick)="click($event)"></Grid>
+  </TabPane>
+</Tabs>
