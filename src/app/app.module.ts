@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,6 +12,8 @@ import { TransactionsComponent } from './components/transactions/transactions.co
 import { RecordBillComponent } from './components/record-bill/record-bill.component';
 import { BillAnalysisComponent } from './components/bill-analysis/bill-analysis.component';
 import { UserAccountComponent } from './components/user-account/user-account.component';
+import { NgNumericKeyboardModule } from 'ng-numeric-keyboard';
+import { TransmitService } from './services/transmit.service';
 
 @NgModule({
   declarations: [
@@ -30,9 +31,10 @@ import { UserAccountComponent } from './components/user-account/user-account.com
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
-    NgZorroAntdMobileModule
+    NgZorroAntdMobileModule,
+    NgNumericKeyboardModule
   ],
-  providers: [],
+  providers: [TransmitService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

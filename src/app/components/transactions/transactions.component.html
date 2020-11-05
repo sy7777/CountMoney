@@ -1,15 +1,17 @@
 <div class="transaction-detail">
   <div class="transaction-summary">
-    <div class="month">{{month}}</div>
-    <!-- <div class="cash-in">Expense：400元</div>
-    <div class="cash-out">Income：100元</div> -->
-    <div class="cash-out">Balance：{{totalMoney | currency}}</div>
+    <div class="month">{{ month }}</div>
+    <div class="cash-out">Balance：{{ totalMoney | currency }}</div>
   </div>
-  <div class="transaction-items">
-    <div class="single-item" *ngFor="let item of transactionList; let i = index;">
-      <i [class]="item.path"></i>
-      <div class="label trans-name">{{item.name}}</div>
-      <div type="text" class="label plus-amount">{{item.amount | currency}}</div>
+
+  <div class="transaction-items" *ngFor="let item of transactionList; let i = index">
+    <div class="single-item" *ngIf="display">
+      <img src="{{ item.icon }}" class="label" />
+      <div class="label trans-name">{{ item.text }}</div>
+      <div type="text" class="label plus-amount">
+        {{ item.amount | currency }}
+      </div>
+      <button class="btn label" (click)="delTransItem(i)">Del</button>
     </div>
   </div>
 </div>

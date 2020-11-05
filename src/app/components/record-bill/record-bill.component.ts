@@ -1,77 +1,84 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastService } from 'ng-zorro-antd-mobile';
+import { ModalService, ToastService } from 'ng-zorro-antd-mobile';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
+import { TransmitService } from 'src/app/services/transmit.service';
 interface IconList {
   path: string;
   name: string;
   type: string;
+}
+interface TransListItem {
+  icon: string;
+  name: string;
+  amount: number;
+  type: string;
+  time: string;
 }
 @Component({
   selector: 'app-record-bill',
   templateUrl: './record-bill.component.html',
   styleUrls: ['./record-bill.component.css'],
 })
+@UntilDestroy()
+
 export class RecordBillComponent implements OnInit {
-  iniconList: IconList[]; outiconList: IconList[];
+  iniconList: IconList[];
+  outiconList: IconList[];
   gridData = [];
   inIcon: any; outIcon: any;
-  flag = true;
   index = 0;
-  iconLen: number;
-  pickTrans:{};
-  pickIcon;
+  pickTrans: any;
+  public transList: TransListItem[]=[];
+  public time: any;
+  constructor(private _toast: ToastService, private _modal: ModalService, private service: TransmitService) {
 
-  numberFocus = {
-    focus: false,
-    date: new Date()
-  };
-
-  constructor(private _toast: ToastService) {
     this.iniconList = [
-      { path: '/assets/icons/income.png', name: 'Salary', type: "in"},
-      { path: '/assets/icons/plus.png', name: 'Add', type: "plus"}
+      { path: '/assets/icons/income.png', name: 'Salary', type: 'in' },
+      { path: '/assets/icons/plus.png', name: 'Add', type: 'plus' },
     ];
     this.outiconList = [
-      { path: '/assets/icons/cart.png', name: 'Glocery', type:"out"},
-      { path: '/assets/icons/cloth.png', name: 'Cloth', type:"out"},
-      { path: '/assets/icons/meal.png', name: 'Dine-in', type:"out"},
-      { path: '/assets/icons/medical.png', name: 'Medical', type:"out"},
-      { path: '/assets/icons/veg.png', name: 'Veg', type:"out"},
-      { path: '/assets/icons/plus.png', name: 'Add', type: "plus"}
+      { path: '/assets/icons/cart.png', name: 'Glocery', type: 'out' },
+      { path: '/assets/icons/cloth.png', name: 'Cloth', type: 'out' },
+      { path: '/assets/icons/meal.png', name: 'Dine-in', type: 'out' },
+      { path: '/assets/icons/medical.png', name: 'Medical', type: 'out' },
+      { path: '/assets/icons/veg.png', name: 'Veg', type: 'out' },
+      { path: '/assets/icons/plus.png', name: 'Add', type: 'plus' },
     ];
     this.inIcon = Array.from(
       this.iniconList.map((item) => {
-        return { icon: item.path, text: item.name, type: item.type};
+        return { icon: item.path, text: item.name, type: item.type };
       })
     );
     this.outIcon = Array.from(
       this.outiconList.map((item) => {
-        return { icon: item.path, text: item.name, type: item.type};
+        return { icon: item.path, text: item.name, type: item.type };
       })
     );
     this.init();
+
+     this.transList = this.service.getTrans("trans");
   }
-
-  ngOnInit(): void {}
-
-  click(event) {
-    // console.log(typeof event);
-
-    this.pickTrans = Object.values(event);
-    this.pickIcon = this.pickTrans[0].icon;
-    // console.log(this.pickIcon);
-    console.log(this.pickIcon);
+  ngOnInit(): void {
+    this.service.getPickTime().pipe(untilDestroyed(this)
+    ).subscribe((msg) => {
+      this.time = msg;
+      console.log(this.time);
+    });
   }
 
   init() {
     // console.log(this.inIcon);
     // console.log(this.outIcon[0]);
-    if(this.index == 0){
-      this.iconLen = (this.outIcon && this.outIcon.length) || 0;
-    }else{
-      this.iconLen = (this.inIcon && this.inIcon.length) || 0;
+    let iconLen = 0
+    if (this.index === 0) {
+      // this.iconLen = (this.outIcon && this.outIcon.length) || 0;
+      iconLen = (this.outIcon && this.outIcon.length) || 0;
+    } else {
+      // this.iconLen = (this.inIcon && this.inIcon.length) || 0;
+      iconLen = (this.inIcon && this.inIcon.length) || 0;
     }
-    let rowCount = Math.ceil(this.iconLen / 3);
-    this.gridData = this.getRows(rowCount, this.iconLen);
+    let rowCount = Math.ceil(iconLen / 3);
+    this.gridData = this.getRows(rowCount, iconLen);
   }
   getRows(rowCount: number, IconLength: number) {
     const columnNum = 3;
@@ -89,8 +96,40 @@ export class RecordBillComponent implements OnInit {
     }
     return rowArr;
   }
-
   onTabClick(item) {
     // console.log('onTabClick', item);
+  }
+  showPromptDefault(event) {
+    this.pickTrans = event.data;
+    this._modal.prompt(
+      'Enter Amount',
+      `You spent money on ${this.pickTrans.text}`,
+      [{ text: 'Cancel' }, {
+        text: 'Submit', onPress: value => {
+          if (typeof parseFloat(value)) {
+            if (this.pickTrans.type === "out") {
+              this.pickTrans.amount = -parseFloat(value);
+              this.pickTrans.time = this.time || new Date().toDateString();
+              this.saveToCloud();
+            }
+            if (this.pickTrans.type === "in") {
+              this.pickTrans.amount = parseFloat(value);
+              this.pickTrans.time = this.time || new Date().toDateString();
+              this.saveToCloud();
+            }
+            if (this.pickTrans.type !== "in" && this.pickTrans.type !== "out") {
+              alert("WRONG")
+            }
+
+          }
+        }
+      }], 'default'
+    );
+  }
+
+  saveToCloud() {
+    this.transList.push(this.pickTrans);
+    this.service.setTrans("trans", this.transList);
+    console.log(this.transList);
   }
 }

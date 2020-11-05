@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 })
 export class TransmitService {
 
-  public info: any= 'serTime';
+  public info: any;
   public currentDate:any = new Date().getUTCMonth()+1;
 
   public infoSource = new Subject<string>();
@@ -15,6 +15,18 @@ export class TransmitService {
   }
   getPickTime(){
     return this.infoSource.asObservable();
+  }
+
+  setTrans(key, value){
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  getTrans(key){
+    return JSON.parse(localStorage.getItem(key))
+  }
+
+  removeTrans(key){
+    localStorage.removeItem(key);
   }
 
 }

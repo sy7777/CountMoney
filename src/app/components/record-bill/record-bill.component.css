@@ -1,12 +1,28 @@
-.sub-title {
-  color: #888;
-  font-size: 14px;
-  padding: 15px 0 9px 15px;
+.enter-area{
+  display: flex;
+  width: 100%;
+  height: 50px;
+
+  justify-content: space-around;
+  padding: 7px;
+  align-items: center;
+}
+.enter-area img{
+  width: 40px;
+  height: 40px;
+  background-color: #fff5ea;
+  background-size: contain;
+  padding: 3px;
+}
+.btn{
+  background-color: #968c83;
+  width: 90px;
+  height: 37px;
+  /* padding: 4px; */
+  margin: 6px;
+  line-height: 37px;
 }
 .not-square-grid .am-grid-icon {
   width: 40px;
   height: 60px;
-}
-.am-list-item.am-input-item {
-  width: 90%;
 }

@@ -11,16 +11,14 @@ import { TransmitService } from 'src/app/services/transmit.service';
 
 export class TransactionsComponent implements OnInit {
   public month: any;
-  itemAmount: number;
   totalMoney: number = 0;
-  transactionList = [
-    { path: 'label fab fa-amazon', name: '亚马逊购物', amount: '-60' },
-    { path: 'label fas fa-shopping-cart', name: '购物', amount: '-40' },
-    { path: 'label fas fa-credit-card', name: '工资', amount: '+400' },
-  ];
-  transAmoutList = [];
-
-  constructor(private service: TransmitService) {}
+  transactionList:any=[];
+  display:boolean = true;
+  constructor(private service: TransmitService) {
+    this.transactionList = this.service.getTrans("trans")
+    // console.log(this.transactionList);
+    this.renderTotalMoney();
+  }
 
   ngOnInit() {
     this.month = new Date().toDateString();
@@ -29,17 +27,30 @@ export class TransactionsComponent implements OnInit {
       this.month = msg;
       // console.log(this.month);
     });
-    this.renderTotalMoney();
+    this.isDisplay()
   }
 
   renderTotalMoney() {
-    this.transactionList.forEach((element) => {
-      this.transAmoutList.push(element.amount);
+    this.totalMoney = 0;
+    console.log(this.transactionList);
+    this.transactionList?.forEach((element) => {
+      console.log();
+
+      this.totalMoney += element.amount;
     });
-    this.transAmoutList.forEach((item) => {
-      this.itemAmount = parseFloat(item);
-      this.totalMoney += this.itemAmount;
-      // console.log(this.totalMoney);
+    return this.totalMoney;
+  }
+
+  delTransItem(index){
+    this.transactionList.splice(index,1);
+    this.service.setTrans("trans", this.transactionList);
+    console.log(this.transactionList);
+
+    this.renderTotalMoney();
+  }
+  isDisplay(){
+    this.transactionList.forEach(element => {
+      if(element.time !== this.month){this.display = false;}
     });
   }
 }
