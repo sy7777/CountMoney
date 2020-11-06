@@ -2,7 +2,12 @@
   width: 100%;
   /* background-color: #fff5ea; */
 }
-
+.balance{
+  background-color: #fff5ea;
+  padding:9px;
+  justify-content: flex-end;
+  display: flex;
+}
 .transaction-summary{
   display: flex;
   justify-content: space-between;

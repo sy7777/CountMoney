@@ -1,0 +1,27 @@
+.user-info{
+  height: 16%;
+  background-color: #fff5ea;
+  display: flex;
+  padding: 27px;
+  /* justify-content: space-around; */
+  align-items: center;
+  border: 1px solid #ccc;
+}
+
+.user-avatar{
+  background: #000;
+  width: 77px;
+  height: 77px;
+  border: 1px solid #000;
+  padding: 7px;
+}
+.right{
+  height: 77px;
+  margin-left: 16px;
+}
+.right .user-name{
+  font-size: 22px;
+  font-weight: 800;
+}
+
+

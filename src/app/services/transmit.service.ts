@@ -22,7 +22,7 @@ export class TransmitService {
   }
 
   getTrans(key){
-    return JSON.parse(localStorage.getItem(key))
+    return JSON.parse(localStorage.getItem(key)) || [];
   }
 
   removeTrans(key){

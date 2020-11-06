@@ -2,18 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { ModalService, ToastService } from 'ng-zorro-antd-mobile';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { TransmitService } from 'src/app/services/transmit.service';
+import { v4 as uuidv4 } from 'uuid';
 interface IconList {
   path: string;
   name: string;
   type: string;
 }
-interface TransListItem {
+export interface TransListItem {
   icon: string;
-  name: string;
+  text: string;
   amount: number;
   type: string;
   time: string;
+  id: string;
 }
+
 @Component({
   selector: 'app-record-bill',
   templateUrl: './record-bill.component.html',
@@ -27,7 +30,7 @@ export class RecordBillComponent implements OnInit {
   gridData = [];
   inIcon: any; outIcon: any;
   index = 0;
-  pickTrans: any;
+  pickTrans: TransListItem;
   public transList: TransListItem[]=[];
   public time: any;
   constructor(private _toast: ToastService, private _modal: ModalService, private service: TransmitService) {
@@ -110,11 +113,13 @@ export class RecordBillComponent implements OnInit {
             if (this.pickTrans.type === "out") {
               this.pickTrans.amount = -parseFloat(value);
               this.pickTrans.time = this.time || new Date().toDateString();
+              this.pickTrans.id = uuidv4();
               this.saveToCloud();
             }
             if (this.pickTrans.type === "in") {
               this.pickTrans.amount = parseFloat(value);
               this.pickTrans.time = this.time || new Date().toDateString();
+              this.pickTrans.id = uuidv4();
               this.saveToCloud();
             }
             if (this.pickTrans.type !== "in" && this.pickTrans.type !== "out") {
