@@ -9,11 +9,13 @@
 }
 
 .user-avatar{
-  background: #000;
-  width: 77px;
-  height: 77px;
+  background: #ffffff;
+  width: 96px;
+  height: 96px;
   border: 1px solid #000;
-  padding: 7px;
+  background-size: contain;
+  border-radius: 50%;
+  margin: 0 auto;
 }
 .right{
   height: 77px;

@@ -4,6 +4,7 @@ import { BillAnalysisComponent } from './components/bill-analysis/bill-analysis.
 import { RecordBillComponent } from './components/record-bill/record-bill.component';
 import { TransactionsComponent } from './components/transactions/transactions.component';
 import { UserAccountComponent } from './components/user-account/user-account.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'transactions', pathMatch: 'full' },
@@ -11,6 +12,7 @@ const routes: Routes = [
     path: 'transactions',
     component: TransactionsComponent,
     data: { title: 'Transactions', calendar: true },
+    canActivate:[AuthGuard]
   },
   {
     path: 'record-bill',

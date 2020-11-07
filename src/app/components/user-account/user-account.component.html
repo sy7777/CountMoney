@@ -1,8 +1,26 @@
 <div class="user-info">
-  <div class="user-avatar"></div>
+  <div>
+    <!-- <div Button (onClick)="showAlert()">
+      </div> -->
+    <img
+      [src]="imgUrl"
+      class="user-avatar"
+      (click)="showUploadImg(upload)"
+    />
+  </div>
 
   <div class="right">
     <div class="user-name">Fred</div>
     <div class="user-description">I am a handsome boy, call me!</div>
   </div>
 </div>
+<ng-template #upload>
+  <ImagePicker
+    [files]="files"
+    [accept]="'image/jpg'"
+    [selectable]="files.length < 1"
+    (onChange)="fileChange($event)"
+    [multiple]="false"
+    [length]="1"
+  ></ImagePicker
+></ng-template>

@@ -20,6 +20,8 @@
     "@angular/platform-browser-dynamic": "~10.1.4",
     "@angular/router": "~10.1.4",
     "@ngneat/until-destroy": "^8.0.3",
+    "bootstrap": "^4.5.3",
+    "firebase": "^8.0.1",
     "ng-numeric-keyboard": "^1.0.1",
     "ng-zorro-antd-mobile": "^3.0.3",
     "rxjs": "~6.6.0",
