@@ -50,7 +50,7 @@ export class TransactionsComponent implements OnInit {
     this.transactionList.forEach(ele => {
       if (!renderObj[ele.time]) {
         renderObj[ele.time] = [ele];
-        console.log(new Date(ele.time));
+        // console.log(new Date(ele.time));
       } else {
         renderObj[ele.time].push(ele);
       }
@@ -66,8 +66,8 @@ export class TransactionsComponent implements OnInit {
         }
     });
     this.renderObj = renderObj;
-    console.log(Object.keys(this.renderObj));
-    console.log(this.renderObj);
+    // console.log(Object.keys(this.renderObj));
+    // console.log(this.renderObj);
 
   }
   delTransItem(id) {
@@ -93,9 +93,5 @@ export class TransactionsComponent implements OnInit {
         return this.display;
       }
     });
-  }
-
-  sortDate(a,b){
-
   }
 }

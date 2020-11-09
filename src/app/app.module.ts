@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgZorroAntdMobileModule } from 'ng-zorro-antd-mobile';
 import { HeaderComponent } from './components/header/header.component';
@@ -14,6 +14,8 @@ import { BillAnalysisComponent } from './components/bill-analysis/bill-analysis.
 import { UserAccountComponent } from './components/user-account/user-account.component';
 import { NgNumericKeyboardModule } from 'ng-numeric-keyboard';
 import { TransmitService } from './services/transmit.service';
+import { NotLogInComponent } from './not-log-in/not-log-in.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { TransmitService } from './services/transmit.service';
     TransactionsComponent,
     RecordBillComponent,
     BillAnalysisComponent,
-    UserAccountComponent
+    UserAccountComponent,
+    NotLogInComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +36,8 @@ import { TransmitService } from './services/transmit.service';
     FormsModule,
     HttpClientModule,
     NgZorroAntdMobileModule,
-    NgNumericKeyboardModule
+    NgNumericKeyboardModule,
+    ReactiveFormsModule
   ],
   providers: [TransmitService],
   bootstrap: [AppComponent]

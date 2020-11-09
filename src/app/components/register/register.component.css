@@ -1,0 +1,19 @@
+.main{
+width: 100%;
+margin: 0 auto;
+/* background: #fff5ea; */
+height: 100%;
+line-height: 100%;
+padding: 7px;
+}
+.logo{
+  width: 150px;
+  height: 150px;
+  background-size: contain;
+  margin: 0 auto;
+}
+.btn{
+  color: aliceblue;
+
+}
+

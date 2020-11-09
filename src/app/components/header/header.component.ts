@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit {
     defaultValue: undefined,
     onSelect: undefined,
   };
-
+  login:boolean;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -38,6 +38,7 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+
     this.router.events
       .pipe(
         untilDestroyed(this),
@@ -54,9 +55,9 @@ export class HeaderComponent implements OnInit {
         this.date = new Date().toDateString();
         // this.date = new Date();
         this.service.info = this.date;
+        this.login = data.login;
       });
       console.log(this.date);
-
   }
 
   initPara() {
@@ -103,5 +104,8 @@ export class HeaderComponent implements OnInit {
   }
   triggerSelectHasDisableDate(dates) {
     console.warn('onSelectHasDisableDate', dates);
+  }
+  goLogin(){
+    this.router.navigate(["/register"]);
   }
 }

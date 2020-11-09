@@ -2,16 +2,19 @@
   <div>
     <!-- <div Button (onClick)="showAlert()">
       </div> -->
-    <img
-      [src]="imgUrl"
-      class="user-avatar"
-      (click)="showUploadImg(upload)"
-    />
+    <img [src]="imgUrl" class="user-avatar" (click)="showUploadImg(upload)" />
   </div>
 
   <div class="right">
-    <div class="user-name">Fred</div>
-    <div class="user-description">I am a handsome boy, call me!</div>
+    <div class="user-name">
+      {{ user.username }}
+      <img
+        src="../../../assets/icons/edit.png"
+        class="edit"
+        (click)="editProfile(edit)"
+      />
+    </div>
+    <div class="user-description">{{ user.des }}</div>
   </div>
 </div>
 <ng-template #upload>
@@ -24,3 +27,21 @@
     [length]="1"
   ></ImagePicker
 ></ng-template>
+<ng-template #edit>
+  <InputItem
+    [clear]="true"
+    [value]="user.username"
+    (onChange)="inputChange($event)"
+    [placeholder]="'Enter your name'"
+    [focus]="autoFocus"
+    [content]="'Name:'"
+  ></InputItem>
+  <TextareaItem
+            [placeholder]="'Say something about yourself...'"
+            [autoFocus]="true"
+            [title]="'Desciption:'"
+            [autoHeight]="true"
+            [value]="user.des"
+            [autoHeight]="true"
+          ></TextareaItem>
+</ng-template>

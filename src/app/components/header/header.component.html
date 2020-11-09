@@ -9,21 +9,23 @@
       *ngIf="calendar"
       (onClick)="onClick()"
     >
+      <Calendar
+        [(ngModel)]="date"
+        [locale]="this.state.en ? 'enUS' : 'zhCN'"
+        [enterDirection]="this.state.enterDirection"
+        [visible]="this.state.show"
+        [defaultDate]="this.state.now"
+        [pickTime]="this.state.pickTime"
+        [type]="this.state.type"
+        [rowSize]="this.state.rowSize"
+        [showShortcut]="this.state.showShortcut"
+        [infinite]="this.state.infinite"
+        [defaultValue]="this.state.defaultValue"
+        (onCancel)="triggerCancel()"
+        (onConfirm)="triggerConfirm($event)"
+      ></Calendar>
     </ListItem>
-    <Calendar
-      [(ngModel)]="date"
-      [locale]="this.state.en ? 'enUS' : 'zhCN'"
-      [enterDirection]="this.state.enterDirection"
-      [visible]="this.state.show"
-      [defaultDate]="this.state.now"
-      [pickTime]="this.state.pickTime"
-      [type]="this.state.type"
-      [rowSize]="this.state.rowSize"
-      [showShortcut]="this.state.showShortcut"
-      [infinite]="this.state.infinite"
-      [defaultValue]="this.state.defaultValue"
-      (onCancel)="triggerCancel()"
-      (onConfirm)="triggerConfirm($event)"
-    ></Calendar>
+
+    <ListItem class="fas fa-sign-in-alt calendar" *ngIf="login" (click)="goLogin()"></ListItem>
   </div>
 </div>

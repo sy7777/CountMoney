@@ -1,0 +1,106 @@
+<div class="main">
+
+    <img src="assets/icons/logo.png" class="logo d-flex flex-column" />
+    <Tabs
+      [page]="2"
+      [useOnPan]="true"
+      [swipeable]="true"
+      [activeTab]="index"
+      [tabBarActiveTextColor]="'#1890ff'"
+      (onChange)="onChange($event)"
+      (onTabClick)="onTabClick($event)"
+    >
+      <TabPane [title]="titleTemplate">
+        <ng-template #titleTemplate>
+          <div>New here?</div>
+        </ng-template>
+        <form [formGroup]="registerForm" autocomplete="off">
+          <List>
+          <div class="d-flex flex-column">
+            <InputItem
+              [placeholder]="'please input account'"
+              [error]="isError"
+              [focus]="onFocus"
+              [value]="formData.username"
+              [clear]="true"
+              [content]="'Account'"
+              formControlName="username"
+              [(ngModel)]="formData.username"
+
+              id="username"
+              (onErrorClick)="inputErrorClick($event)"
+              (onChange)="inputChange($event)"
+
+            >
+            </InputItem>
+            <InputItem
+              id="password"
+              [placeholder]="'please input password'"
+              [type]="'password'"
+              formControlName="password"
+              [(ngModel)]="formData.password"
+              [value]="formData.password"
+              [content]="'Password'"
+              [error]="isError"
+              [clear]="true"
+            >
+            </InputItem>
+            <span class="d-flex justify-content-center">
+              <button [style]="{width:'27%'}" Button [type]="'primary'" [size]="'large'" [inline]="true" (onClick)="onSubmit()">
+                Register
+            </button>
+            </span>
+          </div>
+        </List>
+        </form>
+      </TabPane>
+      <TabPane [title]="titleTemplate1">
+        <ng-template #titleTemplate1>
+          <div>Already have an account?</div>
+        </ng-template>
+        <form [formGroup]="registerForm">
+          <List>
+          <div class="d-flex flex-column">
+            <InputItem
+              [placeholder]="'please input account'"
+              [error]="isError"
+
+              [value]="formData.username"
+              [clear]="true"
+              [content]="'Account'"
+              formControlName="username"
+              [(ngModel)]="formData.username"
+              [defaultValue]="''"
+              id="username"
+              (onErrorClick)="inputErrorClick($event)"
+              (onChange)="inputChange($event)"
+
+            >
+            </InputItem>
+            <InputItem
+              id="password"
+              [placeholder]="'please input password'"
+              [type]="'password'"
+              formControlName="password"
+              [(ngModel)]="formData.password"
+              [value]="formData.password"
+              [content]="'Password'"
+              [error]="isError"
+              [clear]="true"
+            >
+            </InputItem>
+            <span class="d-flex justify-content-center">
+              <button [style]="{width:'27%'}" Button [type]="'primary'" [size]="'large'" [inline]="true" (onClick)="onSubmit()">
+                Log in
+            </button>
+            </span>
+
+
+
+          </div>
+        </List>
+        </form>
+      </TabPane>
+    </Tabs>
+  </div>
+

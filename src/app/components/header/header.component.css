@@ -6,6 +6,9 @@
   justify-content: space-between;
   line-height: 55px;
   text-align: center;
+  position: sticky;
+  z-index: 88;
+  top: 0;
 }
 .header-start{
   /* padding-left: 10px; */
@@ -21,13 +24,16 @@
   align-items: center;
   font-size: 17px;
   font-weight: 100;
-  flex: 1;
+  flex: 1.5;
   text-align: center;
+  display: flex;
+  justify-content: flex-end;
 }
 .header-end .calendar{
   background:none;
   line-height: 55px;
-  float: right ;
+  /* float: right ; */
+
 }
 
 
