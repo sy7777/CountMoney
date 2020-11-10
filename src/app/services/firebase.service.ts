@@ -7,6 +7,7 @@ import {
   User,
   UserFilter,
 } from '../components/user-account/user-account.component';
+import { TransmitService } from './transmit.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,7 @@ export class FirebaseService {
       return {
         userId: snapshot.data().userId,
         avatar: snapshot.data().avatar,
-        username: snapshot.data()['user-name'],
+        username: snapshot.data().username,
         des: snapshot.data().des,
       };
     },
@@ -37,7 +38,7 @@ export class FirebaseService {
     },
   };
 
-  constructor(private _toast: ToastService) {
+  constructor(private _toast: ToastService, private service:TransmitService) {
     this.initialize();
   }
   getUsers(filter?: UserFilter) {
@@ -46,11 +47,15 @@ export class FirebaseService {
       .withConverter(this.userConverter);
 
     if (filter?.username) {
-      query = query.where('user-name', '==', filter.username);
+      query = query.where('username', '==', filter.username);
     }
     if (filter?.password) {
       query = query.where('password', '==', filter.password);
     }
+    if (filter?.userId) {
+      query = query.where('userId', '==', filter.userId);
+    }
+    console.log(query);
     return query;
   }
   uploadFile(file) {
@@ -69,8 +74,7 @@ export class FirebaseService {
     }
     console.log(await this.identifyUser(user));
     this.fireStore
-      .collection('users')
-      .add(user)
+      .collection('users').doc(user.userId).set(user)
       .then(() => {
         this._toast.success('Congraduation!!!', 3000);
         console.log('user added successfully');
@@ -82,6 +86,26 @@ export class FirebaseService {
       .collection('users')
       .where('username', '==', user.username)
       .get();
+  }
+  async checkUserAuth(user: UserFilter) {
+      return await this.fireStore
+      .collection('users').withConverter(this.userConverter)
+      .where('username', '==', user.username).where('password', '==', user.password)
+      .get();
+
+  }
+
+  async updateUser(user:User){
+    await this.fireStore.collection("users").doc(user.userId).update(user)
+      await this.syncToLocalstorage(user.userId);
+
+  }
+
+  async syncToLocalstorage(userId){
+    const snapshot = await this.fireStore.collection("users").withConverter(this.userConverter).where("userId","==",userId).get();
+      snapshot.forEach((doc)=>{
+        this.service.setTrans("users", doc.data())
+      })
   }
   private initialize() {
     if (!firebase.apps.length) {

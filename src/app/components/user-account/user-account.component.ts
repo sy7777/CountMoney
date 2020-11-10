@@ -4,9 +4,9 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 import { TransmitService } from 'src/app/services/transmit.service';
 const data = [];
 export interface User {
-  avatar: string;
-  username: string;
-  des: string;
+  avatar?: string;
+  username?: string;
+  des?: string;
   password?: string;
   userId?: string;
 }
@@ -36,40 +36,26 @@ export class UserAccountComponent implements OnInit, OnDestroy {
   files = data.slice(0);
   multiple = false;
   modalRef: ModalRef;
-  user: User = {
-    avatar: 'https://zos.alipayobjects.com/rmsportal/hqQWgTXdrlmVVYi.jpeg',
-    username: 'Fred',
-    des: 'I am a handsome boy, call me have a chat!',
-  };
+  user: User;
   imgUrl: string =
     'https://zos.alipayobjects.com/rmsportal/hqQWgTXdrlmVVYi.jpeg';
+    username:string;
+    userDescription:string;
   ngOnInit(): void {
-    const defaltuser = this.service.getTrans('users');
+    this.user = this.service.getTrans('users');
     // console.log(defaltuser);
-    if (defaltuser instanceof Array) {
-      this.service.setTrans('users', this.user);
-      console.log('true');
-    } else {
-      // console.log('wrong');
-    }
-    this.unSubscribe = this.firebase.getUsers().onSnapshot((snapshot) => {
-      snapshot.forEach((doc) => {
-        // console.log(doc.data());
-      });
-    });
   }
 
-  fileChange(params) {
+  async fileChange(params) {
     // console.log(params);
     const { files, type, index } = params;
     this.files = files;
-    this.user.avatar = this.files[0].url;
-    // this.service.setTrans("user-avatar",this.files[0].url);
-    this.service.setTrans('users', this.user);
-    this.imgUrl = this.files[0].url;
-    this.firebase.uploadFile(this.files[0].url).then(async (res) => {
-      // console.log(await res.ref.getDownloadURL());
+    const res = await this.firebase.uploadFile(this.files[0].url);
+    await this.firebase.updateUser({
+      userId: this.user.userId,
+      avatar: await res.ref.getDownloadURL(),
     });
+    this.user = this.service.getTrans('users');
   }
   showUploadImg(tem: TemplateRef<any>) {
     this.modalRef = this._modal.alert(tem, undefined, [
@@ -77,24 +63,23 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     ]);
     // console.log(tem);
   }
-  editProfile(tem: TemplateRef<any>){
-    this.modalRef = this._modal.alert( 'Edit Your Profile',tem,
-       [{ text: 'Cancel' },{ text: 'Submit', onPress: (value) => {
-
-       } },
-    ],'default');
+  editProfile(tem: TemplateRef<any>) {
+    this.modalRef = this._modal.alert(
+      'Edit Your Profile',
+      tem,
+      [{ text: 'Cancel' }, { text: 'Submit', onPress: async () => {
+        await this.firebase.updateUser({
+          userId:this.user.userId,
+          username: this.username,
+          des:this.userDescription
+        })
+        this.user = this.service.getTrans('users');
+      } }],
+      'default'
+    );
     // console.log(tem);
   }
-  inputChange(event){
+  inputChange(event) {
     console.log(event);
-  }
-  showPromptDefault() {
-    this._modal.prompt(
-      'Edit Your Profile',
-      'defaultValue for prompt',
-      [{ text: 'Cancel' }, { text: 'Submit', onPress: value => console.log(`输入的内容:${value}`) }],
-      'default',
-      ['100']
-    );
   }
 }

@@ -30,16 +30,19 @@ const routes: Routes = [
     path: 'record-bill',
     component: RecordBillComponent,
     data: { title: 'Record Bill', calendar: true },
+    canActivate: [AuthGuard]
   },
   {
     path: 'bill-analysis',
     component: BillAnalysisComponent,
     data: { title: 'Bill Analysis', calendar: true },
+    canActivate: [AuthGuard]
   },
   {
     path: 'user-account',
     component: UserAccountComponent,
     data: { title: 'User Account' },
+    canActivate: [AuthGuard]
   },
   { path: '**', redirectTo: 'transactions' },
 ];

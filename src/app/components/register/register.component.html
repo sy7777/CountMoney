@@ -64,7 +64,6 @@
             <InputItem
               [placeholder]="'please input account'"
               [error]="isError"
-
               [value]="formData.username"
               [clear]="true"
               [content]="'Account'"
@@ -90,7 +89,7 @@
             >
             </InputItem>
             <span class="d-flex justify-content-center">
-              <button [style]="{width:'27%'}" Button [type]="'primary'" [size]="'large'" [inline]="true" (onClick)="onSubmit()">
+              <button [style]="{width:'27%'}" Button [type]="'primary'" [size]="'large'" [inline]="true" (onClick)="loginSubmit(this.registerForm.value)">
                 Log in
             </button>
             </span>

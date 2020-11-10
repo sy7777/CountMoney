@@ -1,20 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UserFilter } from '../user-account/user-account.component';
 import { v4 as uuidv4 } from 'uuid';
 import { ToastService } from 'ng-zorro-antd-mobile';
+import { Router } from '@angular/router';
+import { TransmitService } from 'src/app/services/transmit.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-
   registerForm: FormGroup;
   isError: boolean = false;
 
@@ -43,8 +40,16 @@ export class RegisterComponent implements OnInit {
   flag = true;
   index = 0;
   registerUser: UserFilter;
-  constructor(private firebase: FirebaseService, private _toast: ToastService) {}
+  constructor(
+    private firebase: FirebaseService,
+    private _toast: ToastService,
+    private router: Router,
+    private service: TransmitService
+  ) {}
 
+  ngOnInit() {
+    this.buildForm();
+  }
   onChange(item) {
     console.log('onChange', item);
   }
@@ -106,7 +111,6 @@ export class RegisterComponent implements OnInit {
     for (const field in this.formErrors) {
       this.formErrors[field] = '';
       const control = form.get(field);
-
       if (control && !control.valid) {
         const messages = this.validationMessage[field];
         for (const key in control.errors) {
@@ -126,21 +130,38 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     if (this.beforeSubmit()) {
-      console.log(this.registerForm.value);
+      // console.log(this.registerForm.value);
       this.registerUser = this.registerForm.value;
       this.registerUser.userId = uuidv4();
-      console.log(this.registerUser);
-      this.firebase.registerUser(this.registerUser).then((res)=>{
-        if(res){
+      // console.log(this.registerUser);
+      this.firebase.registerUser(this.registerUser).then((res) => {
+        if (res) {
           this.onReset();
           this.index = 1;
         }
-      })
+      });
     } else {
       this._toast.offline('You should enter something...', 3000);
     }
   }
 
+  async loginSubmit(user) {
+    console.log(user);
+    const res = await this.firebase.checkUserAuth(user);
+    if (!res.empty) {
+      this._toast.success('Log in successfully', 3000);
+
+      res.forEach(doc => {
+
+        console.log(doc.data());
+this.service.setTrans("users", doc.data())
+      });
+
+      this.router.navigate(['/user-account']);
+    }else{
+      this._toast.offline('Wrong name our password.', 3000);
+    }
+  }
   onReset() {
     this.registerForm.reset();
     this.formData = {
@@ -167,9 +188,5 @@ export class RegisterComponent implements OnInit {
       this.isError = false;
     }
     this.formData.username = e;
-  }
-
-  ngOnInit() {
-    this.buildForm();
   }
 }
