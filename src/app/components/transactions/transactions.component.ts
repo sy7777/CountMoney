@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ModalService } from 'ng-zorro-antd-mobile';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { TransmitService } from 'src/app/services/transmit.service';
 import { TransListItem } from '../record-bill/record-bill.component';
@@ -19,13 +20,14 @@ export class TransactionsComponent implements OnInit, OnDestroy {
   renderObj: any;
   dateKeys: string[];
   currentUser: User;
-  unsubscribe:any;
+  unsubscribe: any;
   constructor(
     private service: TransmitService,
-    private firebase: FirebaseService
+    private firebase: FirebaseService,
+    private _modal: ModalService
   ) {}
   ngOnDestroy(): void {
-    if (this.unsubscribe){
+    if (this.unsubscribe) {
       this.unsubscribe();
     }
   }
@@ -38,10 +40,8 @@ export class TransactionsComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((msg) => {
         this.month = msg;
-        // console.log(this.month);
       });
     this.renderList();
-
   }
 
   renderTotalMoney() {
@@ -53,43 +53,46 @@ export class TransactionsComponent implements OnInit, OnDestroy {
   }
 
   renderList() {
-    this.unsubscribe=this.firebase.getTransFromDB(
-      this.currentUser.userId
-    ).onSnapshot((snapshot)=>{
-      const transaction = [];
-      const renderObj = {};
-      snapshot.forEach(doc=>{
-        transaction.push(doc.data());
-      })
-      this.transactionList = transaction;
-      this.transactionList.forEach((ele) => {
-        console.log(ele);
-        if (!renderObj[ele.time]) {
-          renderObj[ele.time] = [ele];
-          // console.log(new Date(ele.time));
-        } else {
-          renderObj[ele.time].push(ele);
-        }
-      });
+    this.unsubscribe = this.firebase
+      .getTransFromDB(this.currentUser.userId)
+      .onSnapshot((snapshot) => {
+        const transaction = [];
+        const renderObj = {};
+        snapshot.forEach((doc) => {
+          transaction.push(doc.data());
+        });
+        this.transactionList = transaction;
+        this.transactionList.forEach((ele) => {
+          if (!renderObj[ele.time]) {
+            renderObj[ele.time] = [ele];
+          } else {
+            renderObj[ele.time].push(ele);
+          }
+        });
 
-      this.dateKeys = Object.keys(renderObj).sort((b, a) => {
-        if (new Date(a) > new Date(b)) {
-          return 1;
-        } else if (new Date(a) < new Date(b)) {
-          return -1;
-        } else {
-          return 0;
-        }
+        this.dateKeys = Object.keys(renderObj).sort((b, a) => {
+          if (new Date(a) > new Date(b)) {
+            return 1;
+          } else if (new Date(a) < new Date(b)) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+        this.renderObj = renderObj;
+        this.renderTotalMoney();
       });
-      this.renderObj = renderObj;
-      this.renderTotalMoney();
-    });
-    console.log(this.transactionList);
-    // console.log(Object.keys(this.renderObj));
-    // console.log(this.renderObj);
   }
 
-  async delTransItem(id) {
-    await this.firebase.delTransItem(this.currentUser.userId, id);
+  delTransItem(id) {
+    this._modal.alert('Delete', 'Are you sure ?', [
+      { text: 'Cancel' },
+      {
+        text: 'OK',
+        onPress: async () => {
+          await this.firebase.delTransItem(this.currentUser.userId, id);
+        },
+      },
+    ]);
   }
 }

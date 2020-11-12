@@ -7,26 +7,33 @@
     <ListItem
       class="fas fa-calendar-alt calendar"
       *ngIf="calendar"
-      (onClick)="onClick()"
+      (click)="onClick()"
     >
-      <Calendar
-        [(ngModel)]="date"
-        [locale]="this.state.en ? 'enUS' : 'zhCN'"
-        [enterDirection]="this.state.enterDirection"
-        [visible]="this.state.show"
-        [defaultDate]="this.state.now"
-        [pickTime]="this.state.pickTime"
-        [type]="this.state.type"
-        [rowSize]="this.state.rowSize"
-        [showShortcut]="this.state.showShortcut"
-        [infinite]="this.state.infinite"
-        [defaultValue]="this.state.defaultValue"
-        (onCancel)="triggerCancel()"
-        (onConfirm)="triggerConfirm($event)"
-      ></Calendar>
     </ListItem>
-
-    <ListItem class="fas fa-sign-in-alt calendar" *ngIf="login" (click)="goLogin()"></ListItem>
-    <ListItem class="fas fa-sign-out-alt calendar" *ngIf="logout" (click)="logOut()"></ListItem>
+    <ListItem
+      class="fas fa-sign-in-alt calendar"
+      *ngIf="login"
+      (click)="goLogin()"
+    ></ListItem>
+    <ListItem
+      class="fas fa-sign-out-alt calendar"
+      *ngIf="logout"
+      (click)="logOut()"
+    ></ListItem>
   </div>
 </div>
+<Calendar
+  [(ngModel)]="date"
+  [locale]="state.en ? 'enUS' : 'zhCN'"
+  [enterDirection]="state.enterDirection"
+  [visible]="state.show"
+  [defaultDate]="state.now"
+  [pickTime]="state.pickTime"
+  [type]="state.type"
+  [rowSize]="state.rowSize"
+  [showShortcut]="state.showShortcut"
+  [infinite]="state.infinite"
+  [defaultValue]="state.defaultValue"
+  (onCancel)="triggerCancel()"
+  (onConfirm)="triggerConfirm($event)"
+></Calendar>

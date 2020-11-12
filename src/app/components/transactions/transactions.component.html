@@ -10,7 +10,7 @@
       <div type="text" class="label plus-amount">
         {{ trans.amount | currency }}
       </div>
-      <button class="btn label" (click)="delTransItem(trans.id)">Del</button>
+      <i class="fas fa-trash-alt" (click)="delTransItem(trans.id)"></i>
     </div>
   </div>
 </div>

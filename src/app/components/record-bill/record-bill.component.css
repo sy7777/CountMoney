@@ -1,9 +1,8 @@
 .enter-area{
   display: flex;
   width: 100%;
-  height: 50px;
-
-  justify-content: space-around;
+  /* height: 50px; */
+  justify-content: center;
   padding: 7px;
   align-items: center;
 }
@@ -24,5 +23,5 @@
 }
 .not-square-grid .am-grid-icon {
   width: 40px;
-  height: 60px;
+  height: 40px;
 }

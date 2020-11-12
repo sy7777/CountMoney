@@ -1,6 +1,6 @@
 import { filter, map, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TransmitService } from 'src/app/services/transmit.service';
 
@@ -30,8 +30,8 @@ export class HeaderComponent implements OnInit {
     defaultValue: undefined,
     onSelect: undefined,
   };
-  login:boolean;
-  logout:boolean;
+  login: boolean;
+  logout: boolean;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -53,39 +53,42 @@ export class HeaderComponent implements OnInit {
         this.title = data?.title;
         this.calendar = data?.calendar;
         this.date = new Date().toDateString();
-        // this.date = new Date();
         this.service.info = this.date;
         this.login = data.login;
-        this.logout = data.logout
+        this.logout = data.logout;
       });
-      console.log(this.date);
+    this.initPara();
   }
 
   initPara() {
     this.state = {
       ...this.state,
-      ...{
-        show: false,
-        pickTime: false,
-        now: new Date(),
-        type: 'one',
-        rowSize: 'normal',
-        infinite: true,
-        enterDirection: '',
-        onSelect: undefined,
-        showShortcut: false,
-        defaultValue: undefined,
-      },
+      en: true,
+      show: false,
+      pickTime: false,
+      now: new Date(),
+      type: 'one',
+      rowSize: 'normal',
+      infinite: true,
+      enterDirection: '',
+      onSelect: undefined,
+      showShortcut: false,
+      defaultValue: undefined,
     };
   }
 
   onClick() {
-    this.initPara();
-    this.state.show = true;
+    this.state = {
+      ...this.state,
+      show: true,
+    };
   }
 
   triggerCancel() {
-    this.state.show = false;
+    this.state = {
+      ...this.state,
+      show: false,
+    };
   }
 
   triggerConfirm(value) {
@@ -100,17 +103,14 @@ export class HeaderComponent implements OnInit {
     this.changeInfo(this.pickTime);
   }
 
-  changeInfo(date){
+  changeInfo(date) {
     this.service.changeInfo(date);
   }
-  triggerSelectHasDisableDate(dates) {
-    console.warn('onSelectHasDisableDate', dates);
+  goLogin() {
+    this.router.navigate(['/register']);
   }
-  goLogin(){
-    this.router.navigate(["/register"]);
-  }
-  logOut(){
-    this.service.removeTrans("users");
+  logOut() {
+    this.service.removeTrans('users');
     this.router.navigate(['/cashbook']);
   }
 }

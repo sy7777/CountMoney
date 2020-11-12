@@ -38,11 +38,9 @@ export class FirebaseService {
       };
     },
   };
-  transdata: TransListItem[]=[];
-  // transdata: {userId:TransListItem[]};
+  transdata: TransListItem[] = [];
   constructor(private _toast: ToastService, private service: TransmitService) {
     this.initialize();
-    // console.log(this.getTransFromDB('Bobby'));
   }
   getUsers(filter?: UserFilter) {
     let query: firebase.firestore.Query = this.fireStore
@@ -57,7 +55,6 @@ export class FirebaseService {
     if (filter?.userId) {
       query = query.where('userId', '==', filter.userId);
     }
-    console.log(query);
     return query;
   }
   uploadFile(file) {
@@ -69,7 +66,7 @@ export class FirebaseService {
       .child(`${uuidv4()}.jpg`)
       .putString(file, 'data_url', metadata);
   }
-  async delPreImg(url){
+  async delPreImg(url) {
     await this.fireStorage.refFromURL(url).delete();
   }
   async registerUser(user: UserFilter) {
@@ -77,7 +74,6 @@ export class FirebaseService {
       this._toast.offline('User Already Exists !!!', 3000);
       return false;
     }
-    console.log(await this.identifyUser(user));
     this.fireStore
       .collection('users')
       .doc(user.userId)
@@ -110,10 +106,10 @@ export class FirebaseService {
     // const userQuery = await this.fireStore
     const userQuery = this.fireStore
       .collection('trans')
-      .where('userId', '==', userId)
+      .where('userId', '==', userId);
     return userQuery;
   }
-  async syncToLocalstorage(userId ) {
+  async syncToLocalstorage(userId) {
     const snapshot = await this.fireStore
       .collection('users')
       .withConverter(this.userConverter)
@@ -123,12 +119,14 @@ export class FirebaseService {
       this.service.setTrans('users', doc.data());
     });
   }
-  async addTrans(trans:TransListItem){
+  async addTrans(trans: TransListItem) {
     const dataTrans = await this.fireStore
-    .collection('trans').doc(`${trans.userId}-${trans.id}`).set(trans);
+      .collection('trans')
+      .doc(`${trans.userId}-${trans.id}`)
+      .set(trans);
   }
-  async delTransItem(userId, id){
-    await this.fireStore.collection("trans").doc(`${userId}-${id}`).delete()
+  async delTransItem(userId, id) {
+    await this.fireStore.collection('trans').doc(`${userId}-${id}`).delete();
   }
   private initialize() {
     if (!firebase.apps.length) {

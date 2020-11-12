@@ -1,17 +1,21 @@
 <div class="enter-area">
-  <img src="{{this.pickIcon?.icon||defaultIcon}}" alt="" />
+  <img src="{{ this.pickIcon?.icon || defaultIcon }}" alt="" />
   <!-- <input type="number" name="" id=""> -->
-  <div Button [type]="'primary'" class="btn">Submit</div>
+  <!-- <div Button [type]="'primary'" class="btn">Submit</div> -->
 </div>
-
-<Tabs [page]="2" [useOnPan]="true" [swipeable]="true" [activeTab]="index" [tabBarActiveTextColor]="'#1890ff'"
-  (onTabClick)="onTabClick($event)">
+<Tabs
+  [page]="2"
+  [useOnPan]="true"
+  [swipeable]="true"
+  [activeTab]="index"
+  [tabBarActiveTextColor]="'#1890ff'"
+  (onTabClick)="onTabClick($event)"
+>
   <TabPane [title]="titleTemplate">
     <ng-template #titleTemplate>
       <div>Cash Out</div>
     </ng-template>
-    <Grid [data]="outiconList" (onClick)="showPromptDefault($event)" >
-    </Grid>
+    <Grid [data]="outiconList" (onClick)="showPromptDefault($event)"> </Grid>
   </TabPane>
   <TabPane [title]="titleTemplate1">
     <ng-template #titleTemplate1>
