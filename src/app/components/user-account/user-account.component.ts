@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef, OnDestroy } from '@angular/core';
 import { ModalRef, ModalService } from 'ng-zorro-antd-mobile';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { TransmitService } from 'src/app/services/transmit.service';
+import { TransListItem } from '../record-bill/record-bill.component';
 const data = [];
 export interface User {
   avatar?: string;
@@ -50,12 +51,21 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     // console.log(params);
     const { files, type, index } = params;
     this.files = files;
-    const res = await this.firebase.uploadFile(this.files[0].url);
-    await this.firebase.updateUser({
-      userId: this.user.userId,
-      avatar: await res.ref.getDownloadURL(),
-    });
-    this.user = this.service.getTrans('users');
+    const preImgUrl = this.user.avatar;
+    if(this.files[0]){
+      const res = await this.firebase.uploadFile(this.files[0].url);
+      await this.firebase.updateUser({
+        userId: this.user.userId,
+        avatar: await res.ref.getDownloadURL(),
+
+      });
+      if(preImgUrl){
+        this.firebase.delPreImg(preImgUrl)
+      }
+
+      this.user = this.service.getTrans('users');
+    }
+
   }
   showUploadImg(tem: TemplateRef<any>) {
     this.modalRef = this._modal.alert(tem, undefined, [

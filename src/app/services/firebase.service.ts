@@ -3,6 +3,7 @@ import firebase from 'firebase';
 import { ToastService } from 'ng-zorro-antd-mobile';
 import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
+import { TransListItem } from '../components/record-bill/record-bill.component';
 import {
   User,
   UserFilter,
@@ -31,21 +32,22 @@ export class FirebaseService {
       return {
         userId: user.userId,
         avatar: user.avatar,
-        username: user['user-name'],
+        username: user.username,
         des: user.des,
         password: user.password,
       };
     },
   };
-
-  constructor(private _toast: ToastService, private service:TransmitService) {
+  transdata: TransListItem[]=[];
+  // transdata: {userId:TransListItem[]};
+  constructor(private _toast: ToastService, private service: TransmitService) {
     this.initialize();
+    // console.log(this.getTransFromDB('Bobby'));
   }
   getUsers(filter?: UserFilter) {
     let query: firebase.firestore.Query = this.fireStore
       .collection('users')
       .withConverter(this.userConverter);
-
     if (filter?.username) {
       query = query.where('username', '==', filter.username);
     }
@@ -67,19 +69,24 @@ export class FirebaseService {
       .child(`${uuidv4()}.jpg`)
       .putString(file, 'data_url', metadata);
   }
+  async delPreImg(url){
+    await this.fireStorage.refFromURL(url).delete();
+  }
   async registerUser(user: UserFilter) {
-    if(!(await this.identifyUser(user)).empty){
+    if (!(await this.identifyUser(user)).empty) {
       this._toast.offline('User Already Exists !!!', 3000);
       return false;
     }
     console.log(await this.identifyUser(user));
     this.fireStore
-      .collection('users').doc(user.userId).set(user)
+      .collection('users')
+      .doc(user.userId)
+      .set(user)
       .then(() => {
         this._toast.success('Congraduation!!!', 3000);
         console.log('user added successfully');
       });
-      return true;
+    return true;
   }
   async identifyUser(user: UserFilter) {
     return await this.fireStore
@@ -88,24 +95,40 @@ export class FirebaseService {
       .get();
   }
   async checkUserAuth(user: UserFilter) {
-      return await this.fireStore
-      .collection('users').withConverter(this.userConverter)
-      .where('username', '==', user.username).where('password', '==', user.password)
+    return await this.fireStore
+      .collection('users')
+      .withConverter(this.userConverter)
+      .where('username', '==', user.username)
+      .where('password', '==', user.password)
       .get();
-
   }
-
-  async updateUser(user:User){
-    await this.fireStore.collection("users").doc(user.userId).update(user)
-      await this.syncToLocalstorage(user.userId);
-
+  async updateUser(user: User) {
+    await this.fireStore.collection('users').doc(user.userId).update(user);
+    await this.syncToLocalstorage(user.userId);
   }
-
-  async syncToLocalstorage(userId){
-    const snapshot = await this.fireStore.collection("users").withConverter(this.userConverter).where("userId","==",userId).get();
-      snapshot.forEach((doc)=>{
-        this.service.setTrans("users", doc.data())
-      })
+  getTransFromDB(userId) {
+    // const userQuery = await this.fireStore
+    const userQuery = this.fireStore
+      .collection('trans')
+      .where('userId', '==', userId)
+    return userQuery;
+  }
+  async syncToLocalstorage(userId ) {
+    const snapshot = await this.fireStore
+      .collection('users')
+      .withConverter(this.userConverter)
+      .where('userId', '==', userId)
+      .get();
+    snapshot.forEach((doc) => {
+      this.service.setTrans('users', doc.data());
+    });
+  }
+  async addTrans(trans:TransListItem){
+    const dataTrans = await this.fireStore
+    .collection('trans').doc(`${trans.userId}-${trans.id}`).set(trans);
+  }
+  async delTransItem(userId, id){
+    await this.fireStore.collection("trans").doc(`${userId}-${id}`).delete()
   }
   private initialize() {
     if (!firebase.apps.length) {

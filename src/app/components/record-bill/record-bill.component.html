@@ -1,6 +1,6 @@
 <div class="enter-area">
-  <img src="{{this.pickTrans?.icon}}" alt="" />
-  <input type="number" name="" id="">
+  <img src="{{this.pickIcon?.icon||defaultIcon}}" alt="" />
+  <!-- <input type="number" name="" id=""> -->
   <div Button [type]="'primary'" class="btn">Submit</div>
 </div>
 
@@ -10,7 +10,7 @@
     <ng-template #titleTemplate>
       <div>Cash Out</div>
     </ng-template>
-    <Grid [data]="outIcon" (onClick)="showPromptDefault($event)" >
+    <Grid [data]="outiconList" (onClick)="showPromptDefault($event)" >
     </Grid>
   </TabPane>
   <TabPane [title]="titleTemplate1">
@@ -19,6 +19,6 @@
       <div>Cash In</div>
       <!-- </Badge> -->
     </ng-template>
-    <Grid [data]="inIcon" (onClick)="showPromptDefault($event)"></Grid>
+    <Grid [data]="iniconList" (onClick)="showPromptDefault($event)"></Grid>
   </TabPane>
 </Tabs>

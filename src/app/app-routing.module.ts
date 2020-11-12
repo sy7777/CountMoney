@@ -41,7 +41,7 @@ const routes: Routes = [
   {
     path: 'user-account',
     component: UserAccountComponent,
-    data: { title: 'User Account' },
+    data: { title: 'User Account', logout: true},
     canActivate: [AuthGuard]
   },
   { path: '**', redirectTo: 'transactions' },

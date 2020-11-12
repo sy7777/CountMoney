@@ -31,6 +31,7 @@ export class HeaderComponent implements OnInit {
     onSelect: undefined,
   };
   login:boolean;
+  logout:boolean;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -38,7 +39,6 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-
     this.router.events
       .pipe(
         untilDestroyed(this),
@@ -56,6 +56,7 @@ export class HeaderComponent implements OnInit {
         // this.date = new Date();
         this.service.info = this.date;
         this.login = data.login;
+        this.logout = data.logout
       });
       console.log(this.date);
   }
@@ -107,5 +108,9 @@ export class HeaderComponent implements OnInit {
   }
   goLogin(){
     this.router.navigate(["/register"]);
+  }
+  logOut(){
+    this.service.removeTrans("users");
+    this.router.navigate(['/cashbook']);
   }
 }
