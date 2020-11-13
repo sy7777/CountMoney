@@ -79,8 +79,15 @@ export class RecordBillComponent implements OnInit {
   onTabClick(item) {
     // console.log('onTabClick', item);
   }
+  state = {
+    modal1: false,
+  };
+  showModal(key) {
+    this.state[key] = true;
+  }
   showPromptDefault(event) {
     if (event.data.add) {
+      this.showModal("modal1")
     } else {
       this.pickIcon = event.data;
       const ref: ModalRef = this._modal.prompt(
@@ -137,7 +144,6 @@ export class RecordBillComponent implements OnInit {
   }
 
   saveTransToCloud(trans: TransListItem) {
-    // console.log(trans);
     this.firebase.addTrans(trans);
   }
 }

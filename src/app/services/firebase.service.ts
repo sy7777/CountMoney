@@ -141,4 +141,28 @@ export class FirebaseService {
     this.fireStore = firebase.firestore();
     this.fireStorage = firebase.storage();
   }
+  data= [];
+  getImgFromDB(){
+    // this.fireStore.collection("carousel").onSnapshot(snapshot=>{
+    //   const displayimgurlList = [];
+    //   snapshot.forEach(res=>{
+    //     const data = res.data()
+    //     // console.log(data);
+    //     displayimgurlList.push(data.imgurl)
+    //   })
+    //   console.log(displayimgurlList);
+    //   return displayimgurlList;
+    // })
+    const displayImgQuery = this.fireStore
+    .collection('carousel');
+      // console.log(this.data);
+    return displayImgQuery;
+  }
+  getImgFromStorage(){
+    this.fireStorage.ref()
+  }
+  sendImgUrl(){
+    console.log(this.data);
+    return this.data;
+  }
 }
