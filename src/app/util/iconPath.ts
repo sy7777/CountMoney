@@ -6,9 +6,9 @@ export interface TransIcon {
 export interface UserTransIcon {
   icon: string;
   text: string;
-  type: string;
   userId: string;
   id: string;
+  index: number;
 }
 
 export const iconPaths: TransIcon[] = [
@@ -25,16 +25,16 @@ export const iconPaths: TransIcon[] = [
   { icon: '/assets/icons/others.png', text: 'Others'  },
   { icon: '/assets/icons/social.png', text: 'Social' },
   { icon: '/assets/icons/parttime.png', text: 'Part-Time' },
-  { icon: '/assets/icons/rent.png', text: 'Exercise' },
+  { icon: '/assets/icons/rent.png', text: 'Rent' },
   { icon: '/assets/icons/house.png', text: 'House'  },
   { icon: '/assets/icons/snack.png', text: 'Snack' },
   { icon: '/assets/icons/transport.png', text: 'Transport'  },
-  { icon: '/assets/icons/travel.png', text: 'Snack' },
+  { icon: '/assets/icons/travel.png', text: 'Travel' },
 ];
 
 export const defaultInIcon: TransIcon[] = [
   { icon: '/assets/icons/income.png', text: 'Salary' },
-  { icon: '/assets/icons/plus.png', text: 'Add', add: true},
+
 ]
 
 export const defaultOutIcon: TransIcon[] = [
@@ -43,5 +43,7 @@ export const defaultOutIcon: TransIcon[] = [
   { icon: '/assets/icons/meal.png', text: 'Dine-in' },
   { icon: '/assets/icons/medical.png', text: 'Medical' },
   { icon: '/assets/icons/veg.png', text: 'Veg' },
-  { icon: '/assets/icons/plus.png', text: 'Add', add: true},
 ]
+export const addIcon: TransIcon={
+  icon: '/assets/icons/plus.png', text: 'Add', add: true
+}

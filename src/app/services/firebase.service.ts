@@ -8,8 +8,8 @@ import {
   User,
   UserFilter,
 } from '../components/user-account/user-account.component';
+import { TransIcon, UserTransIcon } from '../util/iconPath';
 import { TransmitService } from './transmit.service';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -39,6 +39,7 @@ export class FirebaseService {
     },
   };
   transdata: TransListItem[] = [];
+  alliconsList:  UserTransIcon[] = [];
   constructor(private _toast: ToastService, private service: TransmitService) {
     this.initialize();
   }
@@ -141,28 +142,21 @@ export class FirebaseService {
     this.fireStore = firebase.firestore();
     this.fireStorage = firebase.storage();
   }
-  data= [];
+
   getImgFromDB(){
-    // this.fireStore.collection("carousel").onSnapshot(snapshot=>{
-    //   const displayimgurlList = [];
-    //   snapshot.forEach(res=>{
-    //     const data = res.data()
-    //     // console.log(data);
-    //     displayimgurlList.push(data.imgurl)
-    //   })
-    //   console.log(displayimgurlList);
-    //   return displayimgurlList;
-    // })
     const displayImgQuery = this.fireStore
     .collection('carousel');
       // console.log(this.data);
     return displayImgQuery;
   }
-  getImgFromStorage(){
-    this.fireStorage.ref()
+  async addNewIconToCloud(usericon:  UserTransIcon){
+    await this.fireStore.collection("allicons").doc(`${usericon.userId}${usericon.id}`).set(usericon)
   }
-  sendImgUrl(){
-    console.log(this.data);
-    return this.data;
+  getUserIcons(userId:string){
+    return this.fireStore.collection("allicons").where("userId","==",userId)
   }
+  delUserIcon(id:string){
+    this.fireStore.collection("allicons").where("id","==",id)
+  }
+
 }

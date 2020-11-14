@@ -1,4 +1,4 @@
-.enter-area{
+.enter-area {
   display: flex;
   width: 100%;
   /* height: 50px; */
@@ -6,14 +6,14 @@
   padding: 7px;
   align-items: center;
 }
-.enter-area img{
+.enter-area img {
   width: 40px;
   height: 40px;
   background-color: #fff5ea;
   background-size: contain;
   padding: 3px;
 }
-.btn{
+.btn {
   background-color: #968c83;
   width: 90px;
   height: 37px;
@@ -24,4 +24,67 @@
 .not-square-grid .am-grid-icon {
   width: 40px;
   height: 40px;
+}
+.icon-choose-page-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 12;
+  background-color: rgba(0, 0, 0, 0.3);
+  touch-action: none; /* 不触发任何事件 */
+  -ms-touch-action: none;
+}
+.icon-choose-container {
+  position: fixed;
+  z-index: 99;
+  left: 16px;
+  right: 16px;
+  top: 16%;
+  height: 77%;
+  background-color: #cfd3ce;
+  border-radius: 9px;
+  padding: 10px;
+}
+.icon-choose-header {
+  padding: 10px;
+  text-align: center;
+  color: #34626c;
+  font-weight: 500;
+  font-size: 27px;
+}
+.icon-choose-body {
+}
+.icon-choose-footer {
+  text-align: center;
+  padding: 14px;
+  display: flex;
+  justify-content: space-around;
+}
+.button {
+  display: inline-block;
+  padding: 5px 20px;
+  font-size: 20px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #839b97;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px #999;
+}
+
+.button:hover {
+  background-color: #839b97;
+}
+
+.button:active {
+  background-color: #475f48;
+  box-shadow: 0 2px #666;
+  transform: translateY(4px);
 }

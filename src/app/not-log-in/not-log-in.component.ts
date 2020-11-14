@@ -46,7 +46,6 @@ export class NotLogInComponent implements OnInit, OnDestroy {
       })
       this.state={...this.state, data: carouselList.map(value=> value.imgurl)}
       console.log(this.state);
-
     })
   }
 }
