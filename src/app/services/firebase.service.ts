@@ -152,11 +152,11 @@ export class FirebaseService {
   async addNewIconToCloud(usericon:  UserTransIcon){
     await this.fireStore.collection("allicons").doc(`${usericon.userId}${usericon.id}`).set(usericon)
   }
-  getUserIcons(userId:string){
+  getUserIconsFromDB(userId:string){
     return this.fireStore.collection("allicons").where("userId","==",userId)
   }
-  delUserIcon(id:string){
-    this.fireStore.collection("allicons").where("id","==",id)
+  async delUserIconFromDB(userId:string, id:string){
+    await this.fireStore.collection("allicons").doc(`${userId}${id}`).delete();
   }
 
 }

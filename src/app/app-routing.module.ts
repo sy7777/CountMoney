@@ -13,12 +13,12 @@ const routes: Routes = [
   {
     path: 'cashbook',
     component: NotLogInComponent,
-    data: { title: 'Cashbook', login: true,  hideTabBar: true},
+    data: { title: 'Cashbook', login: true, hideTabBar: true },
   },
   {
     path: 'register',
     component: RegisterComponent,
-    data: { title: 'Register', hideTabBar: true},
+    data: { title: 'Register', hideTabBar: true },
   },
   {
     path: 'transactions',
@@ -30,25 +30,25 @@ const routes: Routes = [
     path: 'record-bill',
     component: RecordBillComponent,
     data: { title: 'Record Bill', calendar: true },
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'bill-analysis',
     component: BillAnalysisComponent,
     data: { title: 'Bill Analysis', calendar: true },
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'user-account',
     component: UserAccountComponent,
-    data: { title: 'User Account', logout: true},
-    canActivate: [AuthGuard]
+    data: { title: 'User Account', logout: true },
+    canActivate: [AuthGuard],
   },
   { path: '**', redirectTo: 'transactions' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

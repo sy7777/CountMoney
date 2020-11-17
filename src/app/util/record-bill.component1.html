@@ -1,57 +1,33 @@
 <div class="enter-area">
   <img src="{{ this.pickIcon?.icon || defaultIcon }}" alt="" />
 </div>
-<Tabs
-  [page]="2"
-  [useOnPan]="true"
-  [swipeable]="true"
-  [activeTab]="index"
-  [tabBarActiveTextColor]="'#1890ff'"
-  (onTabClick)="onTabClick($event)"
-  (onChange)="onChange($event)"
->
+<Tabs [page]="2" [useOnPan]="true" [swipeable]="true" [activeTab]="index" [tabBarActiveTextColor]="'#1890ff'"
+  (onTabClick)="onTabClick($event)" (onChange)="onChange($event)">
   <TabPane [title]="titleTemplate">
     <ng-template #titleTemplate>
       <div>Cash Out</div>
     </ng-template>
-    <Grid
-      [data]="afterAddOutIconList"
-      (onClick)="showPromptDefault($event)"
-    >
+    <Grid [data]="afterAddOutIconList" (onClick)="showPromptDefault($event)">
     </Grid>
   </TabPane>
   <TabPane [title]="titleTemplate1">
     <ng-template #titleTemplate1>
       <div>Cash In</div>
     </ng-template>
-    <Grid
-      [data]="afterAddInIconList"
-      (onClick)="showPromptDefault($event)"
-    ></Grid>
+    <Grid [data]="afterAddInIconList" (onClick)="showPromptDefault($event)"></Grid>
   </TabPane>
 </Tabs>
 
 <div class="icon-choose-page-overlay" *ngIf="visible"></div>
-<div
-  class="icon-choose-container"
-  *ngIf="visible"
-  [@fadeInDownOnEnter]
-  [@fadeOutUpOnLeave]
->
+<div class="icon-choose-container" *ngIf="visible" [@fadeInDownOnEnter] [@fadeOutUpOnLeave]>
   <div class="icon-choose-header">
     Add Your Own Icon:
-    <h4>{{ this.pickIconName }}</h4>
+    <h4>{{ this.displayIconHtmlName }}</h4>
   </div>
 
   <div class="icon-choose-page-body">
-    <Grid
-      [data]="iconPageList"
-      [isCarousel]="true"
-      [itemStyle]="{ background: '#cfd3ce', border: '1px solid #34626c' }"
-      [carouselMaxRow]="3"
-      [columnNum]="3"
-      (onClick)="click($event)"
-    ></Grid>
+    <Grid [data]="iconPageList" [isCarousel]="true" [itemStyle]="{ background: '#cfd3ce', border: '1px solid #34626c' }"
+      [carouselMaxRow]="3" [columnNum]="3" (onClick)="click($event)"></Grid>
   </div>
   <div class="icon-choose-footer">
     <button class="button" (click)="closeIconPage()">Cancel</button>
@@ -60,39 +36,9 @@
   </div>
 </div>
 
-<ng-template #overlay>
-  <PopoverItem [icon]="icon1">Scan</PopoverItem>
-  <PopoverItem [icon]="icon2" [ngStyle]="{ whiteSpace: 'nowrap' }"
-    >My Qrcode</PopoverItem
-  >
-  <PopoverItem [icon]="icon3">
-    <span [ngStyle]="{ marginRight: 5 }">Help</span>
-  </PopoverItem>
-</ng-template>
+<ng-template #update>
+  <p>hhhhhhhh</p>
+  <InputItem [clear]="true" [(ngModel)]="username" (onChange)="inputChange($event)" [placeholder]="'Enter your name'"
+    [focus]="autoFocus" [content]="'Name:'"></InputItem>
 
-<ng-template #icon1>
-  <Icon
-    [src]="
-      'https://gw.alipayobjects.com/zos/rmsportal/tOtXhkIWzwotgGSeptou.svg'
-    "
-    [size]="'xs'"
-  ></Icon>
-</ng-template>
-
-<ng-template #icon2>
-  <Icon
-    [src]="
-      'https://gw.alipayobjects.com/zos/rmsportal/PKAgAqZWJVNwKsAJSmXd.svg'
-    "
-    [size]="'xs'"
-  ></Icon>
-</ng-template>
-
-<ng-template #icon3>
-  <Icon
-    [src]="
-      'https://gw.alipayobjects.com/zos/rmsportal/uQIYTFeRrjPELImDRrPt.svg'
-    "
-    [size]="'xs'"
-  ></Icon>
 </ng-template>

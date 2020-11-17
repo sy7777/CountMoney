@@ -16,6 +16,8 @@ import { NgNumericKeyboardModule } from 'ng-numeric-keyboard';
 import { TransmitService } from './services/transmit.service';
 import { NotLogInComponent } from './not-log-in/not-log-in.component';
 import { RegisterComponent } from './components/register/register.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { RegisterComponent } from './components/register/register.component';
     HttpClientModule,
     NgZorroAntdMobileModule,
     NgNumericKeyboardModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [TransmitService],
   bootstrap: [AppComponent]

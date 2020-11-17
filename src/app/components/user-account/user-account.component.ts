@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, OnDestroy } from '@angular/core';
-import { ModalRef, ModalService } from 'ng-zorro-antd-mobile';
+import { ModalRef, ModalService, ToastService } from 'ng-zorro-antd-mobile';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { TransmitService } from 'src/app/services/transmit.service';
 import { TransListItem } from '../record-bill/record-bill.component';
@@ -26,7 +26,8 @@ export class UserAccountComponent implements OnInit, OnDestroy {
   constructor(
     private _modal: ModalService,
     private service: TransmitService,
-    private firebase: FirebaseService
+    private firebase: FirebaseService,
+    private _toast: ToastService,
   ) {}
   ngOnDestroy(): void {
     if (this.unSubscribe) {
@@ -78,11 +79,20 @@ export class UserAccountComponent implements OnInit, OnDestroy {
       'Edit Your Profile',
       tem,
       [{ text: 'Cancel' }, { text: 'Submit', onPress: async () => {
-        await this.firebase.updateUser({
-          userId:this.user.userId,
-          username: this.username,
-          des:this.userDescription
-        })
+        if(typeof (this.username )=== "string" || typeof (this.userDescription )=== "string"){
+          await this.firebase.updateUser({
+            userId:this.user.userId,
+            username: this.username || "Users",
+            des:this.userDescription || "This person is lazy..."
+          })
+        }else{
+          this._toast.fail("You don't change anything!", 3000, )
+        }
+        // await this.firebase.updateUser({
+        //   userId:this.user.userId,
+        //   username: this.username,
+        //   des:this.userDescription
+        // })
         this.user = this.service.getTrans('users');
       } }],
       'default'
@@ -90,6 +100,6 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     // console.log(tem);
   }
   inputChange(event) {
-    console.log(event);
+    // console.log(event);
   }
 }
