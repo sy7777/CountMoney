@@ -8,10 +8,11 @@
   [activeTab]="index"
   [tabBarActiveTextColor]="'#1890ff'"
   (onTabClick)="onTabClick($event)"
-  (onChange)="onChange($event)"
+
 >
   <TabPane [title]="titleTemplate">
     <ng-template #titleTemplate>
+      <!-- (onChange)="onChange($event)" -->
       <div>Cash Out</div>
     </ng-template>
     <Grid

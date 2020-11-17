@@ -30,11 +30,18 @@ export const iconPaths: TransIcon[] = [
   { icon: '/assets/icons/snack.png', text: 'Snack' },
   { icon: '/assets/icons/transport.png', text: 'Transport'  },
   { icon: '/assets/icons/travel.png', text: 'Travel' },
+
+  { icon: '/assets/icons/cart.png', text: 'Glocery' },
+  { icon: '/assets/icons/cloth.png', text: 'Cloth' },
+  { icon: '/assets/icons/meal.png', text: 'Dine-in' },
+  { icon: '/assets/icons/medical.png', text: 'Medical' },
+  { icon: '/assets/icons/veg.png', text: 'Veg' },
+
+  // { icon: '/assets/icons/income.png', text: 'Salary' },
 ];
 
 export const defaultInIcon: TransIcon[] = [
   { icon: '/assets/icons/income.png', text: 'Salary' },
-
 ]
 
 export const defaultOutIcon: TransIcon[] = [

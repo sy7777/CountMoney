@@ -36,7 +36,6 @@ export interface TransListItem {
   time?: string;
   id?: string;
 }
-
 @Component({
   selector: 'app-record-bill',
   templateUrl: './record-bill.component.html',
@@ -63,7 +62,7 @@ export class RecordBillComponent implements OnInit, OnDestroy {
   public state = { modal1: false };
   public visible: boolean = false;
   // public pickPageIconData: {data: TransIcon[], index: number};
-  public pickPageIconData: TransIcon;
+  public pickPageIconData: TransIcon | UserTransIcon;
   displayIconHtmlName: string;
   afterAddInIconList: TransIcon[] = [];
   afterAddOutIconList: TransIcon[] = [];
@@ -71,7 +70,6 @@ export class RecordBillComponent implements OnInit, OnDestroy {
   modalRef: any;
   icontext: string;
   autoFocus = { focus: true, date: new Date() };
-  cancelListeningUserIcons:any;
   pickUserIcon;
   @ViewChild('update') updateRef: TemplateRef<any>;
   constructor(
@@ -80,10 +78,7 @@ export class RecordBillComponent implements OnInit, OnDestroy {
     private service: TransmitService,
     private firebase: FirebaseService,
     private _actionSheet: ActionSheetService
-  ) {
-
-  }
-
+  ) { }
   ngOnDestroy(): void {
     this.unsubscribe();
     // this.cancelListeningUserIcons();
@@ -179,34 +174,26 @@ export class RecordBillComponent implements OnInit, OnDestroy {
         {
           text: 'Submit',
           onPress: () => {
-            // let userIcon: UserTransIcon = {
-            //   ...this.pickIcon,
-            // };
             this.pickUserIcon = { ...this.pickIcon };
             console.log(this.pickUserIcon);
-            // this.cancelListeningUserIcons = this.firebase
+            let userIconList = [];
             this.firebase
               .getUserIconsFromDB(this.pickUserIcon.userId)
               .onSnapshot((snapshot) => {
                 snapshot.forEach((doc) => {
                   const userIcons = doc.data();
-                  // if(userIcons.text === this.pickUserIcon.text && userIcons.icon === this.pickUserIcon.icon){
-                  //   this._toast.offline("Sorry the name and icon have already exists. Please choose a new icon or a new name!")
-                  //   console.log("重复进来了");
-                  // }else{
-                    console.log("进来了");
-                    let usericon: UserTransIcon = {
-                      icon: this.pickUserIcon.icon,
-                      text: this.icontext,
-                      id: this.pickUserIcon.id,
-                      index: this.pickUserIcon.index,
-                      userId: this.pickUserIcon.userId,
-                    };
-                    console.log(this.icontext);
-                    this.firebase.addNewIconToCloud(usericon);
-                  // }
-                  // console.log(userIcons);
+                  userIconList.push(userIcons);
+                  let usericon: UserTransIcon = {
+                    icon: this.pickUserIcon.icon,
+                    text: this.icontext,
+                    id: this.pickUserIcon.id,
+                    index: this.pickUserIcon.index,
+                    userId: this.pickUserIcon.userId,
+                  };
+                  console.log(this.icontext);
+                  this.firebase.addNewIconToCloud(usericon);
                 });
+                console.log(userIconList);
               });
           },
         },
@@ -235,7 +222,6 @@ export class RecordBillComponent implements OnInit, OnDestroy {
   closeIconPage() {
     this.visible = false;
   }
-
   loadUserIcons() {
     this.unsubscribe = this.firebase
       .getUserIconsFromDB(this.currentUser.userId)
@@ -255,38 +241,54 @@ export class RecordBillComponent implements OnInit, OnDestroy {
           addIcon,
         ];
       });
-
   }
-  submitIconPage() {
-
+  async submitIconPage() {
     if (!this.pickPageIconData) {
       this._toast.offline('Please add a icon or cancel it');
     } else {
-      console.log(this.pickPageIconData);
-      // if(this.index === 0 && this.pickPageIconData.icon === ){
-      if(this.index === 0){
-        this.loadUserIcons();
-        // console.log(this.afterAddOutIconList);
-        const duplicateIcon = this.afterAddOutIconList.filter(item=>{
-          // item.text === defaultOutIcon.text;
-          // console.log(value);
-        })
-        console.log(duplicateIcon);
-        // console.log(KeyObject(this.afterAddInIconList));
-      }
-      this.visible = false;
-      const userIcon: UserTransIcon = {
+      const pickCheckOne: UserTransIcon = {
         ...this.pickPageIconData,
-        id: uuidv4(),
-        userId: this.currentUser.userId,
         index: this.index,
+        userId: '',
+        id: '',
       };
-      this.firebase.addNewIconToCloud(userIcon);
+      const res = await this.firebase.checkIconExists(pickCheckOne);
+      if (res.empty) {
+        const checkDefalut = defaultOutIcon.find((item) => {
+          if (
+            item.icon === this.pickPageIconData.icon &&
+            item.text === this.pickPageIconData.text
+          ) {
+            return item;
+          }
+        });
+        if (checkDefalut === undefined) {
+          this.visible = false;
+          const userIcon: UserTransIcon = {
+            ...this.pickPageIconData,
+            id: uuidv4(),
+            userId: this.currentUser.userId,
+            index: this.index,
+          };
+          this.firebase.addNewIconToCloud(userIcon);
+        } else {
+          this._toast.offline(
+            'Already have, please renew the name or choose a new icon!',
+            3000
+          );
+        }
+      } else {
+        this._toast.offline(
+          'Already have, please renew the name or choose a new icon!',
+          3000
+        );
+      }
+      // if(this.index === 0 && this.pickPageIconData.icon === ){
     }
   }
 
   click(event) {
-    this.pickPageIconData = event.data;
+    this.pickPageIconData = { ...event.data };
     this.displayIconHtmlName = event.data.text;
     console.log(this.pickPageIconData);
   }

@@ -8,7 +8,7 @@ import {
   User,
   UserFilter,
 } from '../components/user-account/user-account.component';
-import { TransIcon, UserTransIcon } from '../util/iconPath';
+import { TransIcon, UserTransIcon, defaultOutIcon } from '../util/iconPath';
 import { TransmitService } from './transmit.service';
 @Injectable({
   providedIn: 'root',
@@ -39,7 +39,7 @@ export class FirebaseService {
     },
   };
   transdata: TransListItem[] = [];
-  alliconsList:  UserTransIcon[] = [];
+  alliconsList: UserTransIcon[] = [];
   constructor(private _toast: ToastService, private service: TransmitService) {
     this.initialize();
   }
@@ -99,6 +99,14 @@ export class FirebaseService {
       .where('password', '==', user.password)
       .get();
   }
+  async checkIconExists(icon: UserTransIcon) {
+    return await this.fireStore
+      .collection('allicons')
+      .where('icon', '==', icon.icon)
+      .where('text', '==', icon.text)
+      .where('index', '==', icon.index)
+      .get();
+  }
   async updateUser(user: User) {
     await this.fireStore.collection('users').doc(user.userId).update(user);
     await this.syncToLocalstorage(user.userId);
@@ -143,20 +151,21 @@ export class FirebaseService {
     this.fireStorage = firebase.storage();
   }
 
-  getImgFromDB(){
-    const displayImgQuery = this.fireStore
-    .collection('carousel');
-      // console.log(this.data);
+  getImgFromDB() {
+    const displayImgQuery = this.fireStore.collection('carousel');
+    // console.log(this.data);
     return displayImgQuery;
   }
-  async addNewIconToCloud(usericon:  UserTransIcon){
-    await this.fireStore.collection("allicons").doc(`${usericon.userId}${usericon.id}`).set(usericon)
+  async addNewIconToCloud(usericon: UserTransIcon) {
+    await this.fireStore
+      .collection('allicons')
+      .doc(`${usericon.userId}${usericon.id}`)
+      .set(usericon);
   }
-  getUserIconsFromDB(userId:string){
-    return this.fireStore.collection("allicons").where("userId","==",userId)
+  getUserIconsFromDB(userId: string) {
+    return this.fireStore.collection('allicons').where('userId', '==', userId);
   }
-  async delUserIconFromDB(userId:string, id:string){
-    await this.fireStore.collection("allicons").doc(`${userId}${id}`).delete();
+  async delUserIconFromDB(userId: string, id: string) {
+    await this.fireStore.collection('allicons').doc(`${userId}${id}`).delete();
   }
-
 }
