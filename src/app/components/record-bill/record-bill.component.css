@@ -1,4 +1,4 @@
-.enter-area {
+.img-show {
   display: flex;
   width: 100%;
   /* height: 50px; */
@@ -6,10 +6,9 @@
   padding: 7px;
   align-items: center;
 }
-.enter-area img {
+.img-show img {
   width: 40px;
   height: 40px;
-  background-color: #fff5ea;
   background-size: contain;
   padding: 3px;
 }
@@ -39,15 +38,16 @@
   -ms-touch-action: none;
 }
 .icon-choose-container {
-  position: fixed;
-  z-index: 99;
+  position: absolute;
+  z-index: 29;
   left: 16px;
   right: 16px;
-  top: 16%;
-  height: 77%;
+  top: 16vh;
+  height: auto;
   background-color: #cfd3ce;
   border-radius: 9px;
   padding: 10px;
+
 }
 .icon-choose-header {
   padding: 10px;
@@ -57,6 +57,8 @@
   font-size: 27px;
 }
 .icon-choose-body {
+  overflow: scroll;
+  height: 50%;
 }
 .icon-choose-footer {
   text-align: center;

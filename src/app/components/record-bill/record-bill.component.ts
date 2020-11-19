@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef } from '@angular/core';
 import {
   ActionSheetService,
   ModalRef,
@@ -44,13 +38,10 @@ export interface TransListItem {
 })
 @UntilDestroy()
 export class RecordBillComponent implements OnInit, OnDestroy {
-  public iniconList: TransIcon[];
-  public outiconList: TransIcon[];
-  public index = 0;
+  public index: number = 0;
   public pickIcon: TransIcon;
   public defaultIcon: string = 'assets/icons/expense.png';
   public currentUser: User;
-  public transList: TransListItem[] = [];
   public time: string;
   public iconPageList = Array.from(new Array(iconPaths.length)).map(
     (_val, i) => ({
@@ -58,30 +49,25 @@ export class RecordBillComponent implements OnInit, OnDestroy {
       text: `${iconPaths[i].text}`,
     })
   );
-  actionIndex: number = 0;
-  public state = { modal1: false };
   public visible: boolean = false;
-  // public pickPageIconData: {data: TransIcon[], index: number};
   public pickPageIconData: TransIcon | UserTransIcon;
-  displayIconHtmlName: string;
+  public displayIconHtmlName: string;
   afterAddInIconList: TransIcon[] = [];
   afterAddOutIconList: TransIcon[] = [];
   unsubscribe: any;
   modalRef: any;
-  icontext: string;
-  autoFocus = { focus: true, date: new Date() };
-  pickUserIcon;
-  @ViewChild('update') updateRef: TemplateRef<any>;
+  public icontext;
+  public pickUserIcon: UserTransIcon;
+
   constructor(
     private _toast: ToastService,
     private _modal: ModalService,
     private service: TransmitService,
     private firebase: FirebaseService,
     private _actionSheet: ActionSheetService
-  ) { }
+  ) {}
   ngOnDestroy(): void {
     this.unsubscribe();
-    // this.cancelListeningUserIcons();
   }
   async ngOnInit() {
     this.service
@@ -95,24 +81,32 @@ export class RecordBillComponent implements OnInit, OnDestroy {
     this.loadUserIcons();
   }
   alertAction(tem: TemplateRef<any>) {
-    const BUTTONS = ['Record this bill', 'Update the name', 'Delete', 'Cancel'];
+    let BUTTONS, destructiveButtonIndex, allActionIndex;
+    if ((this.pickIcon as UserTransIcon).userId) {
+      BUTTONS = ['Record this bill', 'Update the name', 'Delete', 'Cancel'];
+      destructiveButtonIndex = BUTTONS.length - 2;
+    } else {
+      BUTTONS = ['Record this bill', 'Cancel'];
+      destructiveButtonIndex = BUTTONS.length - 1;
+    }
+    allActionIndex = BUTTONS.length;
     this._actionSheet.showActionSheetWithOptions(
       {
         options: BUTTONS,
         cancelButtonIndex: BUTTONS.length - 1,
-        destructiveButtonIndex: BUTTONS.length - 2,
+        destructiveButtonIndex: destructiveButtonIndex,
         title: 'Choose Your Action',
         maskClosable: true,
       },
       (buttonIndex) => {
-        this.actionIndex = buttonIndex;
-        // console.log(buttonIndex);
         if (!buttonIndex) {
           this.recordBillAction();
         }
-        if (buttonIndex === 1) {
-          console.log('true');
+        if (buttonIndex === 1 && allActionIndex > 2) {
           this.updateIconName(tem);
+        }
+        if (buttonIndex === 1 && allActionIndex === 2) {
+          close();
         }
         if (buttonIndex === 2) {
           this.delUserIcon();
@@ -174,8 +168,6 @@ export class RecordBillComponent implements OnInit, OnDestroy {
         {
           text: 'Submit',
           onPress: () => {
-            this.pickUserIcon = { ...this.pickIcon };
-            console.log(this.pickUserIcon);
             let userIconList = [];
             this.firebase
               .getUserIconsFromDB(this.pickUserIcon.userId)
@@ -183,17 +175,21 @@ export class RecordBillComponent implements OnInit, OnDestroy {
                 snapshot.forEach((doc) => {
                   const userIcons = doc.data();
                   userIconList.push(userIcons);
-                  let usericon: UserTransIcon = {
-                    icon: this.pickUserIcon.icon,
-                    text: this.icontext,
-                    id: this.pickUserIcon.id,
-                    index: this.pickUserIcon.index,
-                    userId: this.pickUserIcon.userId,
-                  };
-                  console.log(this.icontext);
-                  this.firebase.addNewIconToCloud(usericon);
+                  let usericon: UserTransIcon;
+                  if (this.icontext) {
+                    usericon = {
+                      icon: this.pickUserIcon.icon,
+                      text: this.icontext,
+                      id: this.pickUserIcon.id,
+                      index: this.pickUserIcon.index,
+                      userId: this.pickUserIcon.userId,
+                    };
+                    this.firebase.addNewIconToCloud(usericon);
+                  } else {
+                    this._toast.offline("You don't enter anything...", 3000);
+                  }
+                  // this.icontext = "";
                 });
-                console.log(userIconList);
               });
           },
         },
@@ -202,11 +198,9 @@ export class RecordBillComponent implements OnInit, OnDestroy {
     );
   }
   async delUserIcon() {
-    this.pickUserIcon = { ...this.pickIcon };
-    // console.log(this.pickUserIcon.id, this.pickUserIcon);
     await this.firebase.delUserIconFromDB(
-      this.pickUserIcon.userId,
-      this.pickUserIcon.id
+      (this.pickIcon as UserTransIcon).userId,
+      (this.pickIcon as UserTransIcon).id
     );
   }
 
@@ -271,6 +265,7 @@ export class RecordBillComponent implements OnInit, OnDestroy {
             index: this.index,
           };
           this.firebase.addNewIconToCloud(userIcon);
+          this.pickIcon.icon = undefined;
         } else {
           this._toast.offline(
             'Already have, please renew the name or choose a new icon!',
@@ -283,22 +278,37 @@ export class RecordBillComponent implements OnInit, OnDestroy {
           3000
         );
       }
-      // if(this.index === 0 && this.pickPageIconData.icon === ){
     }
   }
-
+  editPageIconName(tem) {
+    this.modalRef = this._modal.alert(
+      'Edit Your Icon Name',
+      tem,
+      [
+        { text: 'Cancel' },
+        {
+          text: 'Submit',
+          onPress: () => {
+            this.displayIconHtmlName = this.icontext;
+          },
+        },
+      ],
+      'default'
+    );
+  }
   click(event) {
     this.pickPageIconData = { ...event.data };
     this.displayIconHtmlName = event.data.text;
-    console.log(this.pickPageIconData);
   }
 
-  showPromptDefault(event) {
+  showPromptDefault(event, tem: TemplateRef<any>) {
     if (event.data.add) {
       this.showIconPage();
     } else {
       this.pickIcon = event.data;
-      this.alertAction(this.updateRef);
+      this.pickUserIcon = this.pickIcon as UserTransIcon;
+      console.log(this.pickUserIcon);
+      this.alertAction(tem);
     }
   }
   saveTransToCloud(trans: TransListItem) {

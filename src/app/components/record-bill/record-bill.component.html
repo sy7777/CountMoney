@@ -1,4 +1,4 @@
-<div class="enter-area">
+<div class="img-show">
   <img src="{{ this.pickIcon?.icon || defaultIcon }}" alt="" />
 </div>
 <Tabs
@@ -17,7 +17,7 @@
     </ng-template>
     <Grid
       [data]="afterAddOutIconList"
-      (onClick)="showPromptDefault($event)"
+      (onClick)="showPromptDefault($event, update)"
     >
     </Grid>
   </TabPane>
@@ -27,7 +27,7 @@
     </ng-template>
     <Grid
       [data]="afterAddInIconList"
-      (onClick)="showPromptDefault($event)"
+      (onClick)="showPromptDefault($event, update)"
     ></Grid>
   </TabPane>
 </Tabs>
@@ -39,7 +39,8 @@
   [@fadeInDownOnEnter]
   [@fadeOutUpOnLeave]
 >
-  <div class="icon-choose-header">
+  <div class="icon-choose-header" (click)=" editPageIconName(update)">
+  <!-- <div class="icon-choose-header"> -->
     Add Your Own Icon:
     <h4>{{ this.displayIconHtmlName }}</h4>
   </div>
@@ -48,7 +49,7 @@
     <Grid
       [data]="iconPageList"
       [isCarousel]="true"
-      [itemStyle]="{ background: '#cfd3ce', border: '1px solid #34626c' }"
+      [itemStyle]="{ background: '#cfd3ce', border: '1px solid #34626c'}"
       [carouselMaxRow]="3"
       [columnNum]="3"
       (onClick)="click($event)"
@@ -63,5 +64,5 @@
 
 <ng-template #update>
   <InputItem [clear]="true" [(ngModel)]="icontext" (onChange)="inputChange($event)" [placeholder]="'Enter your new name'"
-    [focus]="autoFocus" [content]="'New name:'"></InputItem>
+    [content]="'New name:'"></InputItem>
 </ng-template>
