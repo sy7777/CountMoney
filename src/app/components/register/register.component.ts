@@ -50,25 +50,17 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
     this.buildForm();
   }
-  onChange(item) {
-    console.log('onChange', item);
-  }
+  onChange(item) {}
 
-  onTabClick(item) {
-    console.log('onTabClick', item);
-  }
+  onTabClick(item) {}
 
-  selectCard(e) {
-    console.log(' ', JSON.stringify(e));
-  }
+  selectCard(e) {}
 
   changeIndex() {
     this.index = 0;
   }
 
-  onClick() {
-    console.log('click');
-  }
+  onClick() {}
 
   buildForm(): void {
     this.registerForm = new FormGroup({
@@ -130,10 +122,8 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     if (this.beforeSubmit()) {
-      // console.log(this.registerForm.value);
       this.registerUser = this.registerForm.value;
       this.registerUser.userId = uuidv4();
-      // console.log(this.registerUser);
       this.firebase.registerUser(this.registerUser).then((res) => {
         if (res) {
           this.onReset();
@@ -146,19 +136,16 @@ export class RegisterComponent implements OnInit {
   }
 
   async loginSubmit(user) {
-    console.log(user);
     const res = await this.firebase.checkUserAuth(user);
     if (!res.empty) {
       this._toast.success('Log in successfully', 3000);
 
-      res.forEach(doc => {
-
-        console.log(doc.data());
-this.service.setTrans("users", doc.data())
+      res.forEach((doc) => {
+        this.service.setTrans('users', doc.data());
       });
 
       this.router.navigate(['/user-account']);
-    }else{
+    } else {
       this._toast.offline('Wrong name our password.', 3000);
     }
   }
@@ -173,9 +160,7 @@ this.service.setTrans("users", doc.data())
     this.isError = false;
   }
 
-  afterChange(event) {
-    console.log(event, 'afterChange');
-  }
+  afterChange(event) {}
 
   inputErrorClick(e) {
     alert('At least four charactors for account');

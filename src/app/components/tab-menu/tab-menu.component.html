@@ -1,6 +1,11 @@
 <div class="tab-bar">
-  <div class="tab-item" [routerLink]="[item.path]" routerLinkActive="active" *ngFor="let item of tabBarItems">
+  <div
+    class="tab-item"
+    [routerLink]="[item.path]"
+    routerLinkActive="active"
+    *ngFor="let item of tabBarItems"
+  >
     <i [class]="item.icon"></i>
-    {{item.name}}
+    {{ item.name }}
   </div>
 </div>

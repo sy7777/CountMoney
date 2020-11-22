@@ -1,21 +1,20 @@
 <div class="main">
-
-    <img src="assets/icons/logo.png" class="logo d-flex flex-column" />
-    <Tabs
-      [page]="2"
-      [useOnPan]="true"
-      [swipeable]="true"
-      [activeTab]="index"
-      [tabBarActiveTextColor]="'#1890ff'"
-      (onChange)="onChange($event)"
-      (onTabClick)="onTabClick($event)"
-    >
-      <TabPane [title]="titleTemplate">
-        <ng-template #titleTemplate>
-          <div>New here?</div>
-        </ng-template>
-        <form [formGroup]="registerForm" autocomplete="off">
-          <List>
+  <img src="assets/icons/logo.png" class="logo d-flex flex-column" />
+  <Tabs
+    [page]="2"
+    [useOnPan]="true"
+    [swipeable]="true"
+    [activeTab]="index"
+    [tabBarActiveTextColor]="'#1890ff'"
+    (onChange)="onChange($event)"
+    (onTabClick)="onTabClick($event)"
+  >
+    <TabPane [title]="titleTemplate">
+      <ng-template #titleTemplate>
+        <div>New here?</div>
+      </ng-template>
+      <form [formGroup]="registerForm" autocomplete="off">
+        <List>
           <div class="d-flex flex-column">
             <InputItem
               [placeholder]="'please input account'"
@@ -26,11 +25,9 @@
               [content]="'Account'"
               formControlName="username"
               [(ngModel)]="formData.username"
-
               id="username"
               (onErrorClick)="inputErrorClick($event)"
               (onChange)="inputChange($event)"
-
             >
             </InputItem>
             <InputItem
@@ -46,20 +43,27 @@
             >
             </InputItem>
             <span class="d-flex justify-content-center">
-              <button [style]="{width:'27%'}" Button [type]="'primary'" [size]="'large'" [inline]="true" (onClick)="onSubmit()">
+              <button
+                [style]="{ width: '27%' }"
+                Button
+                [type]="'primary'"
+                [size]="'large'"
+                [inline]="true"
+                (onClick)="onSubmit()"
+              >
                 Register
-            </button>
+              </button>
             </span>
           </div>
         </List>
-        </form>
-      </TabPane>
-      <TabPane [title]="titleTemplate1">
-        <ng-template #titleTemplate1>
-          <div>Already have an account?</div>
-        </ng-template>
-        <form [formGroup]="registerForm">
-          <List>
+      </form>
+    </TabPane>
+    <TabPane [title]="titleTemplate1">
+      <ng-template #titleTemplate1>
+        <div>Already have an account?</div>
+      </ng-template>
+      <form [formGroup]="registerForm">
+        <List>
           <div class="d-flex flex-column">
             <InputItem
               [placeholder]="'please input account'"
@@ -73,7 +77,6 @@
               id="username"
               (onErrorClick)="inputErrorClick($event)"
               (onChange)="inputChange($event)"
-
             >
             </InputItem>
             <InputItem
@@ -89,17 +92,20 @@
             >
             </InputItem>
             <span class="d-flex justify-content-center">
-              <button [style]="{width:'27%'}" Button [type]="'primary'" [size]="'large'" [inline]="true" (onClick)="loginSubmit(this.registerForm.value)">
+              <button
+                [style]="{ width: '27%' }"
+                Button
+                [type]="'primary'"
+                [size]="'large'"
+                [inline]="true"
+                (onClick)="loginSubmit(this.registerForm.value)"
+              >
                 Log in
-            </button>
+              </button>
             </span>
-
-
-
           </div>
         </List>
-        </form>
-      </TabPane>
-    </Tabs>
-  </div>
-
+      </form>
+    </TabPane>
+  </Tabs>
+</div>

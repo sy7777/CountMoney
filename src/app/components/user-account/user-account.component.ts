@@ -27,7 +27,7 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     private _modal: ModalService,
     private service: TransmitService,
     private firebase: FirebaseService,
-    private _toast: ToastService,
+    private _toast: ToastService
   ) {}
   ngOnDestroy(): void {
     if (this.unSubscribe) {
@@ -41,8 +41,8 @@ export class UserAccountComponent implements OnInit, OnDestroy {
   user: User;
   imgUrl: string =
     'https://zos.alipayobjects.com/rmsportal/hqQWgTXdrlmVVYi.jpeg';
-    username:string;
-    userDescription:string;
+  username: string;
+  userDescription: string;
   ngOnInit(): void {
     this.user = this.service.getTrans('users');
     // console.log(defaltuser);
@@ -53,20 +53,18 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     const { files, type, index } = params;
     this.files = files;
     const preImgUrl = this.user.avatar;
-    if(this.files[0]){
+    if (this.files[0]) {
       const res = await this.firebase.uploadFile(this.files[0].url);
       await this.firebase.updateUser({
         userId: this.user.userId,
         avatar: await res.ref.getDownloadURL(),
-
       });
-      if(preImgUrl){
-        this.firebase.delPreImg(preImgUrl)
+      if (preImgUrl) {
+        this.firebase.delPreImg(preImgUrl);
       }
 
       this.user = this.service.getTrans('users');
     }
-
   }
   showUploadImg(tem: TemplateRef<any>) {
     this.modalRef = this._modal.alert(tem, undefined, [
@@ -78,23 +76,32 @@ export class UserAccountComponent implements OnInit, OnDestroy {
     this.modalRef = this._modal.alert(
       'Edit Your Profile',
       tem,
-      [{ text: 'Cancel' }, { text: 'Submit', onPress: async () => {
-        if(typeof (this.username )=== "string" || typeof (this.userDescription )=== "string"){
-          await this.firebase.updateUser({
-            userId:this.user.userId,
-            username: this.username || "Users",
-            des:this.userDescription || "This person is lazy..."
-          })
-        }else{
-          this._toast.fail("You don't change anything!", 3000, )
-        }
-        // await this.firebase.updateUser({
-        //   userId:this.user.userId,
-        //   username: this.username,
-        //   des:this.userDescription
-        // })
-        this.user = this.service.getTrans('users');
-      } }],
+      [
+        { text: 'Cancel' },
+        {
+          text: 'Submit',
+          onPress: async () => {
+            if (
+              typeof this.username === 'string' ||
+              typeof this.userDescription === 'string'
+            ) {
+              await this.firebase.updateUser({
+                userId: this.user.userId,
+                username: this.username || 'Users',
+                des: this.userDescription || 'This person is lazy...',
+              });
+            } else {
+              this._toast.fail("You don't change anything!", 3000);
+            }
+            // await this.firebase.updateUser({
+            //   userId:this.user.userId,
+            //   username: this.username,
+            //   des:this.userDescription
+            // })
+            this.user = this.service.getTrans('users');
+          },
+        },
+      ],
       'default'
     );
     // console.log(tem);

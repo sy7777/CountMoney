@@ -5,7 +5,12 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 import { TransmitService } from 'src/app/services/transmit.service';
 import { TransListItem } from '../record-bill/record-bill.component';
 import { User } from '../user-account/user-account.component';
-
+export interface Transfilter {
+  in?: boolean;
+  out?: boolean;
+  startDate?: Date;
+  endDate?: Date;
+}
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',
@@ -13,7 +18,8 @@ import { User } from '../user-account/user-account.component';
 })
 @UntilDestroy()
 export class TransactionsComponent implements OnInit, OnDestroy {
-  public month: any;
+  public startDate: Date;
+  endDate: Date;
   totalMoney: number = 0;
   transactionList: TransListItem[];
   display: boolean = true;
@@ -34,12 +40,12 @@ export class TransactionsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentUser = this.service.getTrans('users');
-    this.month = new Date().toDateString();
     this.service
       .getPickTime()
       .pipe(untilDestroyed(this))
       .subscribe((msg) => {
-        this.month = msg;
+        this.startDate = msg?.startDate;
+        this.endDate = msg?.endDate;
       });
     this.renderList();
   }
@@ -59,14 +65,18 @@ export class TransactionsComponent implements OnInit, OnDestroy {
         const transaction = [];
         const renderObj = {};
         snapshot.forEach((doc) => {
-          transaction.push(doc.data());
+          const data = {
+            ...doc.data(),
+            time: doc.data().time.toDate(),
+          };
+          transaction.push(data);
         });
         this.transactionList = transaction;
         this.transactionList.forEach((ele) => {
-          if (!renderObj[ele.time]) {
-            renderObj[ele.time] = [ele];
+          if (!renderObj[ele.time?.toDateString()]) {
+            renderObj[ele.time?.toDateString()] = [ele];
           } else {
-            renderObj[ele.time].push(ele);
+            renderObj[ele.time?.toDateString()].push(ele);
           }
         });
 

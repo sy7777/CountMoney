@@ -1,6 +1,9 @@
 <div class="header">
   <div class="header-start current-time">
-    <span *ngIf="calendar">{{ date | date }}</span>
+    <span *ngIf="calendar"
+      >{{ startDate | date }} <span *ngIf="endDate">-</span>
+      {{ endDate | date }}</span
+    >
   </div>
   <div class="header-title">{{ title }}</div>
   <div class="header-end">
@@ -23,7 +26,7 @@
   </div>
 </div>
 <Calendar
-  [(ngModel)]="date"
+  [(ngModel)]="startDate"
   [locale]="state.en ? 'enUS' : 'zhCN'"
   [enterDirection]="state.enterDirection"
   [visible]="state.show"

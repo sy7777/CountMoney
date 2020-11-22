@@ -2,7 +2,11 @@
   <div>
     <!-- <div Button (onClick)="showAlert()">
       </div> -->
-    <img [src]="user.avatar || imgUrl" class="user-avatar" (click)="showUploadImg(upload)" />
+    <img
+      [src]="user.avatar || imgUrl"
+      class="user-avatar"
+      (click)="showUploadImg(upload)"
+    />
   </div>
 
   <div class="right">
@@ -14,7 +18,7 @@
         (click)="editProfile(edit)"
       />
     </div>
-    <div class="user-description">{{ user.des ||"Lazy..." }}</div>
+    <div class="user-description">{{ user.des || "Lazy..." }}</div>
   </div>
 </div>
 <ng-template #upload>
@@ -37,12 +41,12 @@
     [content]="'Name:'"
   ></InputItem>
   <TextareaItem
-            [placeholder]="'Say something about yourself...'"
-            [autoFocus]="true"
-            [title]="'Desciption:'"
-            [autoHeight]="true"
-            [(ngModel)]="userDescription"
-            (onChange)="inputChange($event)"
-            [autoHeight]="true"
-          ></TextareaItem>
+    [placeholder]="'Say something about yourself...'"
+    [autoFocus]="true"
+    [title]="'Desciption:'"
+    [autoHeight]="true"
+    [(ngModel)]="userDescription"
+    (onChange)="inputChange($event)"
+    [autoHeight]="true"
+  ></TextareaItem>
 </ng-template>

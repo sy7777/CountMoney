@@ -18,23 +18,21 @@ import {
   UserTransIcon,
   addIcon,
 } from 'src/app/util/iconPath';
-import {
-  fadeInDownOnEnterAnimation,
-  fadeOutUpOnLeaveAnimation,
-} from 'angular-animations';
+import { fadeInDown, fadeOutUp } from 'src/app/util/animations';
 export interface TransListItem {
   userId?: string;
   icon?: string;
   text?: string;
   amount?: number;
-  time?: string;
+  time?: Date;
   id?: string;
+  type?: string;
 }
 @Component({
   selector: 'app-record-bill',
   templateUrl: './record-bill.component.html',
   styleUrls: ['./record-bill.component.css'],
-  animations: [fadeInDownOnEnterAnimation(), fadeOutUpOnLeaveAnimation()],
+  animations: [fadeInDown, fadeOutUp],
 })
 @UntilDestroy()
 export class RecordBillComponent implements OnInit, OnDestroy {
@@ -42,7 +40,8 @@ export class RecordBillComponent implements OnInit, OnDestroy {
   public pickIcon: TransIcon;
   public defaultIcon: string = 'assets/icons/expense.png';
   public currentUser: User;
-  public time: string;
+  startDate: Date;
+  endDate: Date;
   public iconPageList = Array.from(new Array(iconPaths.length)).map(
     (_val, i) => ({
       icon: `${iconPaths[i].icon}`,
@@ -70,12 +69,14 @@ export class RecordBillComponent implements OnInit, OnDestroy {
     this.unsubscribe();
   }
   async ngOnInit() {
+    this.startDate = this.service.dateRange?.startDate;
+    this.endDate = this.service.dateRange?.endDate;
     this.service
       .getPickTime()
       .pipe(untilDestroyed(this))
       .subscribe((msg) => {
-        this.time = msg;
-        console.log(this.time);
+        this.startDate = msg?.startDate;
+        this.endDate = msg?.endDate;
       });
     this.currentUser = this.service.getTrans('users');
     this.loadUserIcons();
@@ -139,10 +140,11 @@ export class RecordBillComponent implements OnInit, OnDestroy {
                 trans = {
                   text: this.pickIcon.text,
                   userId: this.currentUser.userId,
-                  time: this.time || new Date().toDateString(),
+                  time: this.startDate || new Date(),
                   id: uuidv4(),
                   amount: amount,
                   icon: this.pickIcon.icon,
+                  type: this.index ? 'in' : 'out',
                 };
 
                 this.saveTransToCloud(trans);
@@ -307,14 +309,11 @@ export class RecordBillComponent implements OnInit, OnDestroy {
     } else {
       this.pickIcon = event.data;
       this.pickUserIcon = this.pickIcon as UserTransIcon;
-      console.log(this.pickUserIcon);
       this.alertAction(tem);
     }
   }
   saveTransToCloud(trans: TransListItem) {
     this.firebase.addTrans(trans);
   }
-  inputChange(event) {
-    // console.log(event);
-  }
+  inputChange(event) {}
 }

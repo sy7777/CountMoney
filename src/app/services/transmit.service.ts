@@ -1,32 +1,32 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject, Observable, of } from 'rxjs';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TransmitService {
+  dateRange: { startDate: Date; endDate: Date };
+  // public info: any;
+  public currentDate: any = new Date().getUTCMonth() + 1;
 
-  public info: any;
-  public currentDate:any = new Date().getUTCMonth()+1;
-
-  public infoSource = new Subject<string>();
-  constructor(){}
-  changeInfo(msg:any):void{
+  public infoSource = new Subject<any>();
+  constructor() {}
+  changeInfo(msg: any): void {
+    this.dateRange = msg;
     this.infoSource.next(msg);
   }
-  getPickTime(){
+  getPickTime() {
     return this.infoSource.asObservable();
   }
 
-  setTrans(key, value){
+  setTrans(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
   }
 
-  getTrans(key){
+  getTrans(key) {
     return JSON.parse(localStorage.getItem(key)) || [];
   }
 
-  removeTrans(key){
+  removeTrans(key) {
     localStorage.removeItem(key);
   }
-
 }

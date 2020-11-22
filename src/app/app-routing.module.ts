@@ -23,7 +23,7 @@ const routes: Routes = [
   {
     path: 'transactions',
     component: TransactionsComponent,
-    data: { title: 'Transactions', calendar: true },
+    data: { title: 'Transactions', calendar: true, isRange: true },
     canActivate: [AuthGuard],
   },
   {
@@ -35,7 +35,7 @@ const routes: Routes = [
   {
     path: 'bill-analysis',
     component: BillAnalysisComponent,
-    data: { title: 'Bill Analysis', calendar: true },
+    data: { title: 'Bill Analysis', calendar: true, isRange: true },
     canActivate: [AuthGuard],
   },
   {

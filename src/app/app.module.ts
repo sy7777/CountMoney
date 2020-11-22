@@ -18,7 +18,7 @@ import { NotLogInComponent } from './not-log-in/not-log-in.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-
+import { ChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +29,7 @@ import { environment } from '../environments/environment';
     BillAnalysisComponent,
     UserAccountComponent,
     NotLogInComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,9 +40,12 @@ import { environment } from '../environments/environment';
     NgZorroAntdMobileModule,
     NgNumericKeyboardModule,
     ReactiveFormsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ChartsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+    }),
   ],
   providers: [TransmitService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

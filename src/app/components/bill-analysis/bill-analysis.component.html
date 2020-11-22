@@ -1,6 +1,18 @@
 <div class="main">
-  <div class="time">Time</div>
-  <div class="bar-chart">Am a bar</div>
+  <!-- <div class="time" *ngIf="this.endDate">
+    {{ this.startDate | date }} - {{ this.endDate | date }}
+  </div> -->
+  <div class="bar-chart" *ngIf="chartData[0]?.data?.length">
+    <canvas
+      baseChart
+      [datasets]="chartData"
+      [labels]="chartLabels"
+      [chartType]="'doughnut'"
+      [options]="chartOptions"
+      [plugins]="plugins"
+    >
+    </canvas>
+  </div>
   <div class="trans-summary">
     <SegmentedControl
       class="tab"
@@ -9,13 +21,14 @@
       [values]="['All cash out', 'All cansh in']"
       (onChange)="choose($event)"
     ></SegmentedControl>
+    <!-- <div class="balance">Balance: <span class="total-amount">$300</span></div> -->
     <div class="trans-item" *ngFor="let item of analysisList">
       <div class="icon">
-        <img [src]="item.cateIcon" alt="" srcset="" />
-        <div class="trans-name">{{ item.cateText }}</div>
+        <img [src]="item.icon" alt="" srcset="" />
+        <div class="trans-name">{{ item.text }}</div>
       </div>
-      <div class="percentage">{{ item.catePercent }}%</div>
-      <div class="amount">{{ item.catetotalAmount | currency }}</div>
+      <div class="percentage">{{ item.percentage }}</div>
+      <div class="amount">{{ item.amount | currency }}</div>
     </div>
   </div>
 </div>

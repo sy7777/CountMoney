@@ -4,12 +4,14 @@ import { ToastService } from 'ng-zorro-antd-mobile';
 import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
 import { TransListItem } from '../components/record-bill/record-bill.component';
+import { Transfilter } from '../components/transactions/transactions.component';
 import {
   User,
   UserFilter,
 } from '../components/user-account/user-account.component';
-import { TransIcon, UserTransIcon, defaultOutIcon } from '../util/iconPath';
+import { UserTransIcon } from '../util/iconPath';
 import { TransmitService } from './transmit.service';
+import * as moment from 'moment';
 @Injectable({
   providedIn: 'root',
 })
@@ -38,8 +40,8 @@ export class FirebaseService {
       };
     },
   };
-  transdata: TransListItem[] = [];
-  alliconsList: UserTransIcon[] = [];
+  private readonly TIME_START = 'T00:00:00';
+  private readonly TIME_END = 'T23:59:59.999';
   constructor(private _toast: ToastService, private service: TransmitService) {
     this.initialize();
   }
@@ -81,7 +83,6 @@ export class FirebaseService {
       .set(user)
       .then(() => {
         this._toast.success('Congraduation!!!', 3000);
-        console.log('user added successfully');
       });
     return true;
   }
@@ -111,11 +112,34 @@ export class FirebaseService {
     await this.fireStore.collection('users').doc(user.userId).update(user);
     await this.syncToLocalstorage(user.userId);
   }
-  getTransFromDB(userId) {
-    // const userQuery = await this.fireStore
-    const userQuery = this.fireStore
+  getTransFromDB(userId, filter?: Transfilter) {
+    let userQuery = this.fireStore
       .collection('trans')
       .where('userId', '==', userId);
+    if (filter?.in) {
+      userQuery = userQuery.where('type', '==', 'in');
+    } else if (filter?.out) {
+      userQuery = userQuery.where('type', '==', 'out');
+    }
+    if (filter?.startDate) {
+      userQuery = userQuery.where(
+        'time',
+        '>=',
+        new Date(
+          `${moment(filter.startDate).format('YYYY-MM-DD')}${this.TIME_START}`
+        )
+      );
+    }
+    if (filter?.endDate) {
+      userQuery = userQuery.where(
+        'time',
+        '<=',
+        new Date(
+          `${moment(filter.endDate).format('YYYY-MM-DD')}${this.TIME_END}`
+        )
+      );
+    }
+
     return userQuery;
   }
   async syncToLocalstorage(userId) {
@@ -153,7 +177,6 @@ export class FirebaseService {
 
   getImgFromDB() {
     const displayImgQuery = this.fireStore.collection('carousel');
-    // console.log(this.data);
     return displayImgQuery;
   }
   async addNewIconToCloud(usericon: UserTransIcon) {

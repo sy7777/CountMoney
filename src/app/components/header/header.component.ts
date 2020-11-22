@@ -13,10 +13,11 @@ import { TransmitService } from 'src/app/services/transmit.service';
 @UntilDestroy()
 export class HeaderComponent implements OnInit {
   title: string = '';
-  date: any = '';
+  startDate: Date;
+  endDate: Date;
   calendar: boolean;
   pickTime: string = '';
-
+  range: boolean;
   state: any = {
     en: true,
     show: false,
@@ -52,12 +53,17 @@ export class HeaderComponent implements OnInit {
       .subscribe((data) => {
         this.title = data?.title;
         this.calendar = data?.calendar;
-        this.date = new Date().toDateString();
-        this.service.info = this.date;
+        this.startDate = new Date();
+        this.endDate = undefined;
+        this.service.changeInfo({
+          startDate: this.startDate,
+          endDate: this.endDate,
+        });
         this.login = data.login;
         this.logout = data.logout;
+        this.range = data.isRange;
+        this.initPara();
       });
-    this.initPara();
   }
 
   initPara() {
@@ -67,7 +73,7 @@ export class HeaderComponent implements OnInit {
       show: false,
       pickTime: false,
       now: new Date(),
-      type: 'one',
+      type: this.range ? 'range' : 'one',
       rowSize: 'normal',
       infinite: true,
       enterDirection: '',
@@ -92,15 +98,14 @@ export class HeaderComponent implements OnInit {
   }
 
   triggerConfirm(value) {
-    const { startDate } = value;
+    const { startDate, endDate } = value;
     this.state = {
       ...this.state,
       show: false,
     };
-    this.date = startDate;
-    // this.pickTime = this.date.getTime().format('yyyy/MM/dd');
-    this.pickTime = this.date.toDateString();
-    this.changeInfo(this.pickTime);
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.changeInfo({ startDate: this.startDate, endDate: this.endDate });
   }
 
   changeInfo(date) {
