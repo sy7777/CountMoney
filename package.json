@@ -29,6 +29,7 @@
     "ng-numeric-keyboard": "^1.0.1",
     "ng-zorro-antd-mobile": "^3.0.3",
     "ng2-charts": "^2.4.2",
+    "ngx-bootstrap": "^6.2.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "uuid": "^8.3.1",

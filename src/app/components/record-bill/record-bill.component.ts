@@ -19,6 +19,7 @@ import {
   addIcon,
 } from 'src/app/util/iconPath';
 import { fadeInDown, fadeOutUp } from 'src/app/util/animations';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 export interface TransListItem {
   userId?: string;
   icon?: string;
@@ -55,6 +56,7 @@ export class RecordBillComponent implements OnInit, OnDestroy {
   afterAddOutIconList: TransIcon[] = [];
   unsubscribe: any;
   modalRef: any;
+  bsModalRef:BsModalRef;
   public icontext;
   public pickUserIcon: UserTransIcon;
 
@@ -63,7 +65,8 @@ export class RecordBillComponent implements OnInit, OnDestroy {
     private _modal: ModalService,
     private service: TransmitService,
     private firebase: FirebaseService,
-    private _actionSheet: ActionSheetService
+    private _actionSheet: ActionSheetService,
+    private modalService: BsModalService
   ) {}
   ngOnDestroy(): void {
     this.unsubscribe();
@@ -80,6 +83,7 @@ export class RecordBillComponent implements OnInit, OnDestroy {
       });
     this.currentUser = this.service.getTrans('users');
     this.loadUserIcons();
+    this.modalService.onHidden.pipe(untilDestroyed(this)).subscribe(()=>{this.displayIconHtmlName = undefined,this.pickPageIconData = undefined})
   }
   alertAction(tem: TemplateRef<any>) {
     let BUTTONS, destructiveButtonIndex, allActionIndex;
@@ -212,8 +216,9 @@ export class RecordBillComponent implements OnInit, OnDestroy {
   onChange(item) {
     this.index = item.index;
   }
-  showIconPage() {
-    this.visible = true;
+  showIconPage(tem:TemplateRef<any>) {
+    // this.visible = true;
+    this.bsModalRef = this.modalService.show(tem,  Object.assign({}, { class: 'modal-dialog-centered gray modal-lg' }))
   }
   closeIconPage() {
     this.visible = false;
@@ -245,7 +250,7 @@ export class RecordBillComponent implements OnInit, OnDestroy {
       const pickCheckOne: UserTransIcon = {
         ...this.pickPageIconData,
         index: this.index,
-        userId: '',
+        userId: this.currentUser.userId,
         id: '',
       };
       const res = await this.firebase.checkIconExists(pickCheckOne);
@@ -267,7 +272,8 @@ export class RecordBillComponent implements OnInit, OnDestroy {
             index: this.index,
           };
           this.firebase.addNewIconToCloud(userIcon);
-          this.pickIcon.icon = undefined;
+          // this.pickIcon.icon = undefined;
+          this.bsModalRef?.hide();
         } else {
           this._toast.offline(
             'Already have, please renew the name or choose a new icon!',
@@ -303,9 +309,9 @@ export class RecordBillComponent implements OnInit, OnDestroy {
     this.displayIconHtmlName = event.data.text;
   }
 
-  showPromptDefault(event, tem: TemplateRef<any>) {
+  showPromptDefault(event, tem: TemplateRef<any>, bstem: TemplateRef<any>) {
     if (event.data.add) {
-      this.showIconPage();
+      this.showIconPage(bstem);
     } else {
       this.pickIcon = event.data;
       this.pickUserIcon = this.pickIcon as UserTransIcon;

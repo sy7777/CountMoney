@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1606046524314,
+  "timestamp": 1606051936744,
   "index": "https://sy7777.github.io/cash-book/index.html",
   "assetGroups": [
     {
@@ -13,11 +13,11 @@
       "urls": [
         "https://sy7777.github.io/cash-book/favicon.ico",
         "https://sy7777.github.io/cash-book/index.html",
-        "https://sy7777.github.io/cash-book/main.4436ce8bfb4196554ad0.js",
+        "https://sy7777.github.io/cash-book/main.a6a0aa8816d693cde504.js",
         "https://sy7777.github.io/cash-book/manifest.webmanifest",
         "https://sy7777.github.io/cash-book/polyfills.35a5ca1855eb057f016a.js",
         "https://sy7777.github.io/cash-book/runtime.acf0dec4155e77772545.js",
-        "https://sy7777.github.io/cash-book/styles.10c37c80580abf471a49.css"
+        "https://sy7777.github.io/cash-book/styles.efc125318462795a492c.css"
       ],
       "patterns": []
     },
@@ -118,12 +118,12 @@
     "https://sy7777.github.io/cash-book/assets/icons/travel.png": "dc32fdced2ad1f93da0f440cb8484d53ddf7182c",
     "https://sy7777.github.io/cash-book/assets/icons/veg.png": "d0883c8cc2c76087f18c34f1cbbc4227670d01b6",
     "https://sy7777.github.io/cash-book/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "https://sy7777.github.io/cash-book/index.html": "0591fec6e44a9d4cace652e0b8a040318b68017e",
-    "https://sy7777.github.io/cash-book/main.4436ce8bfb4196554ad0.js": "88c47740f34eff4ddebc755dd32fc180e28fee2c",
+    "https://sy7777.github.io/cash-book/index.html": "f268561d0be9642d7f9441c908208d71312a9dd4",
+    "https://sy7777.github.io/cash-book/main.a6a0aa8816d693cde504.js": "8179f3a381168e4ab5c3681037e68f207950caf3",
     "https://sy7777.github.io/cash-book/manifest.webmanifest": "3f137f5f9ea55db787f4a05515832299138aa24a",
     "https://sy7777.github.io/cash-book/polyfills.35a5ca1855eb057f016a.js": "578360d24ce37383f261c7ef63b1f822d28e8dde",
     "https://sy7777.github.io/cash-book/runtime.acf0dec4155e77772545.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
-    "https://sy7777.github.io/cash-book/styles.10c37c80580abf471a49.css": "e6e1c2bd95c8bd192ea60b93d8b67d166d9f8722"
+    "https://sy7777.github.io/cash-book/styles.efc125318462795a492c.css": "abb6372aa0f31a08e31b75b213ba6424c5d60971"
   },
   "navigationUrls": [
     {

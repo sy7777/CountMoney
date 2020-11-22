@@ -106,6 +106,7 @@ export class FirebaseService {
       .where('icon', '==', icon.icon)
       .where('text', '==', icon.text)
       .where('index', '==', icon.index)
+      .where('userId', '==', icon.userId)
       .get();
   }
   async updateUser(user: User) {

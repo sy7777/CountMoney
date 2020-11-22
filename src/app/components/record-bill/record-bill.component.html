@@ -8,7 +8,6 @@
   [activeTab]="index"
   [tabBarActiveTextColor]="'#1890ff'"
   (onTabClick)="onTabClick($event)"
-
 >
   <TabPane [title]="titleTemplate">
     <ng-template #titleTemplate>
@@ -17,7 +16,7 @@
     </ng-template>
     <Grid
       [data]="afterAddOutIconList"
-      (onClick)="showPromptDefault($event, update)"
+      (onClick)="showPromptDefault($event, update, addIcon)"
     >
     </Grid>
   </TabPane>
@@ -27,42 +26,51 @@
     </ng-template>
     <Grid
       [data]="afterAddInIconList"
-      (onClick)="showPromptDefault($event, update)"
+      (onClick)="showPromptDefault($event, update, addIcon)"
     ></Grid>
   </TabPane>
 </Tabs>
 
-<div class="icon-choose-page-overlay" *ngIf="visible"></div>
-<div
-  class="icon-choose-container"
-  *ngIf="visible"
-  [@fadeInDownOnEnter]
-  [@fadeOutUpOnLeave]
->
-  <div class="icon-choose-header" (click)=" editPageIconName(update)">
-  <!-- <div class="icon-choose-header"> -->
-    Add Your Own Icon:
-    <h4>{{ this.displayIconHtmlName }}</h4>
+<ng-template #update>
+  <InputItem
+    [clear]="true"
+    [(ngModel)]="icontext"
+    (onChange)="inputChange($event)"
+    [placeholder]="'Enter your new name'"
+    [content]="'New name:'"
+  ></InputItem>
+</ng-template>
+<ng-template #addIcon>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">
+      Choose your icon <span *ngIf="pickPageIconData">:</span
+      ><span *ngIf="pickPageIconData" class="display-name">{{
+        this.displayIconHtmlName
+      }}</span>
+    </h5>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="bsModalRef?.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
-
-  <div class="icon-choose-page-body">
+  <div class="modal-body">
     <Grid
       [data]="iconPageList"
       [isCarousel]="true"
-      [itemStyle]="{ background: '#cfd3ce', border: '1px solid #34626c'}"
+      [itemStyle]="{  border: '0.5px solid #34626c' }"
       [carouselMaxRow]="3"
       [columnNum]="3"
       (onClick)="click($event)"
     ></Grid>
   </div>
-  <div class="icon-choose-footer">
-    <button class="button" (click)="closeIconPage()">Cancel</button>
-    <!-- <button class="button" (click)="delUserIcon()">Delete</button> -->
-    <button class="button" (click)="submitIconPage()">Submit</button>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" bs (click)="bsModalRef?.hide()">
+      CANCEL
+    </button>
+    <button type="button" class="btn" (click)="submitIconPage()">PICK</button>
   </div>
-</div>
-
-<ng-template #update>
-  <InputItem [clear]="true" [(ngModel)]="icontext" (onChange)="inputChange($event)" [placeholder]="'Enter your new name'"
-    [content]="'New name:'"></InputItem>
 </ng-template>

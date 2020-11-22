@@ -19,6 +19,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ChartsModule } from 'ng2-charts';
+import { ModalModule } from 'ngx-bootstrap/modal';
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,6 +45,7 @@ import { ChartsModule } from 'ng2-charts';
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
     }),
+    ModalModule.forRoot()
   ],
   providers: [TransmitService],
   bootstrap: [AppComponent],
