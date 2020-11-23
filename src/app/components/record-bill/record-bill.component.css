@@ -12,6 +12,11 @@
   background-size: contain;
   padding: 3px;
 }
+.main{
+  height: calc(100vh - 169px);
+  overflow: auto;
+  width: 100%;
+}
 .btn:not([bs]) {
   background-color: #968c83;
   width: 90px;

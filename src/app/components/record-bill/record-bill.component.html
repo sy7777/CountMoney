@@ -1,36 +1,39 @@
 <div class="img-show">
   <img src="{{ this.pickIcon?.icon || defaultIcon }}" alt="" />
 </div>
-<Tabs
-  [page]="2"
-  [useOnPan]="true"
-  [swipeable]="true"
-  [activeTab]="index"
-  [tabBarActiveTextColor]="'#1890ff'"
-  (onTabClick)="onTabClick($event)"
->
-  <TabPane [title]="titleTemplate">
-    <ng-template #titleTemplate>
-      <!-- (onChange)="onChange($event)" -->
-      <div>Cash Out</div>
-    </ng-template>
-    <Grid
-      [data]="afterAddOutIconList"
-      (onClick)="showPromptDefault($event, update, addIcon)"
-    >
-    </Grid>
-  </TabPane>
-  <TabPane [title]="titleTemplate1">
-    <ng-template #titleTemplate1>
-      <div>Cash In</div>
-    </ng-template>
-    <Grid
-      [data]="afterAddInIconList"
-      (onClick)="showPromptDefault($event, update, addIcon)"
-    ></Grid>
-  </TabPane>
-</Tabs>
-
+<div class="main">
+  <Tabs
+    [page]="2"
+    [useOnPan]="true"
+    [swipeable]="true"
+    [activeTab]="index"
+    [tabBarActiveTextColor]="'#1890ff'"
+    (onTabClick)="onTabClick($event)"
+  >
+    <TabPane [title]="titleTemplate">
+      <ng-template #titleTemplate>
+        <!-- (onChange)="onChange($event)" -->
+        <div>Cash Out</div>
+      </ng-template>
+      <Grid
+        [data]="afterAddOutIconList"
+        [itemStyle]="{ border: '0.5px inset #34626c'}"
+        (onClick)="showPromptDefault($event, update, addIcon)"
+      >
+      </Grid>
+    </TabPane>
+    <TabPane [title]="titleTemplate1">
+      <ng-template #titleTemplate1>
+        <div>Cash In</div>
+      </ng-template>
+      <Grid
+        [data]="afterAddInIconList"
+        [itemStyle]="{ border: '0.5px inset #34626c' }"
+        (onClick)="showPromptDefault($event, update, addIcon)"
+      ></Grid>
+    </TabPane>
+  </Tabs>
+</div>
 <ng-template #update>
   <InputItem
     [clear]="true"
@@ -61,7 +64,7 @@
     <Grid
       [data]="iconPageList"
       [isCarousel]="true"
-      [itemStyle]="{  border: '0.5px solid #34626c' }"
+      [itemStyle]="{ border: '0.5px solid #34626c' }"
       [carouselMaxRow]="3"
       [columnNum]="3"
       (onClick)="click($event)"

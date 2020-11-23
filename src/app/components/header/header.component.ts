@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TransmitService } from 'src/app/services/transmit.service';
-
+import * as moment from 'moment';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -117,5 +117,15 @@ export class HeaderComponent implements OnInit {
   logOut() {
     this.service.removeTrans('users');
     this.router.navigate(['/cashbook']);
+  }
+  getDate(){
+    let dateStr = '';
+    if(this.startDate){
+      dateStr = `${moment(this.startDate).format('YYYY/MM/DD')}`
+    }
+    if(this.endDate){
+      dateStr = `${dateStr} - ${moment(this.endDate).format('YYYY/MM/DD')}`
+    }
+    return dateStr;
   }
 }

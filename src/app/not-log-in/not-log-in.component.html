@@ -1,24 +1,26 @@
 <WingBlank>
   <div class="header"><h2>User Guide</h2></div>
   <WhiteSpace></WhiteSpace>
-  <Carousel
-    [infinite]="true"
-    [autoplay]="true"
-    (beforeChange)="beforeChange($event)"
-    (afterChange)="afterChange($event)"
-  >
-    <CarouselSlide
-      *ngFor="let item of state.data; let i = index"
-      [ngStyle]="{ height: state.imgHeight }"
+  <div class="main">
+    <Carousel
+      [infinite]="true"
+      [autoplay]="true"
+      (beforeChange)="beforeChange($event)"
+      (afterChange)="afterChange($event)"
+      [autoplayInterval] = "'5000'"
     >
-      <div
-        style="display: inline-block; width: 100%"
+      <CarouselSlide
+        *ngFor="let item of state.data; let i = index"
         [ngStyle]="{ height: state.imgHeight }"
       >
-        <img [src]="item" style="pointer-events: none; width: 100%" />
-      </div>
-    </CarouselSlide>
-  </Carousel>
-  <WhiteSpace></WhiteSpace>
-  <div Button (onClick)="onClick1()">Only authorized people can add images</div>
+        <div
+          style="display: inline-block; width: 100%; height: 80vh;"
+          [ngStyle]="{ height: state.imgHeight }"
+        >
+          <img [src]="item" style="pointer-events: none; width: 100%" />
+        </div>
+      </CarouselSlide>
+    </Carousel>
+    <div class="des">{{currentDisplayDes}}</div>
+  </div>
 </WingBlank>

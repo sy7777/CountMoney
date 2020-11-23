@@ -1,16 +1,18 @@
 <div class="balance">Your Total Balance：{{ totalMoney | currency }}</div>
-<div class="transaction-detail"  *ngFor="let item of dateKeys;">
-  <!-- <div class="transaction-summary" > -->
-    <div class="transaction-summary">{{ item | date:"yyyy/MM/dd" }}</div>
-  <!-- </div> -->
-  <div class="transaction-items" *ngFor="let trans of renderObj[item]; let i = index">
-    <div class="single-item">
-      <img src="{{ trans.icon }}" class="label" />
-      <div class="label trans-name">{{ trans.text }}</div>
-      <div type="text" class="label plus-amount">
-        {{ trans.amount | currency }}
+<div class="main">
+  <div class="transaction-detail"  *ngFor="let item of dateKeys;">
+    <!-- <div class="transaction-summary" > -->
+      <div class="transaction-summary">{{ item | date:"yyyy/MM/dd" }}</div>
+    <!-- </div> -->
+    <div class="transaction-items" *ngFor="let trans of renderObj[item]; let i = index">
+      <div class="single-item">
+        <img src="{{ trans.icon }}" class="label" />
+        <div class="label trans-name">{{ trans.text }}</div>
+        <div type="text" class="label plus-amount">
+          {{ trans.amount | currency }}
+        </div>
+        <i class="fas fa-trash-alt" (click)="delTransItem(trans.id)"></i>
       </div>
-      <i class="fas fa-trash-alt" (click)="delTransItem(trans.id)"></i>
     </div>
   </div>
 </div>

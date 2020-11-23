@@ -1,3 +1,8 @@
+.main{
+  width: 100%;
+  height: calc(100vh - 157px);
+  overflow: auto;
+}
 .transaction-detail{
   width: 100%;
   /* background-color: #fff5ea; */
@@ -14,6 +19,8 @@
   text-align: center;
   background-color: #d6d2c4;
   padding:9px;
+
+  font-weight: 500;
 }
 .transaction-items{
   flex: 1;
@@ -25,10 +32,11 @@
   justify-content: space-around;
   text-align: center;
   align-items: center;
-  margin-top: 4px;
-  background-color: #f7dad9;
-  padding: 4px;
+  /* margin-top: 4px; */
+  background-color: #fff5ea;
+  border-bottom: 1px dotted cadetblue;
   /* padding-left: 14px; */
+  padding: 7px;
 }
 /* .single-item .label:nth-child(1){
   flex:1;
@@ -43,8 +51,8 @@
   flex:1;
 } */
 .single-item img{
-  width: 27px;
-  height: 27px;
+  width: 33px;
+  height: 33px;
   padding: 4px;
   background-size: contain;
   padding-left: 6px;

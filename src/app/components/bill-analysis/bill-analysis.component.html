@@ -22,6 +22,7 @@
       (onChange)="choose($event)"
     ></SegmentedControl>
     <!-- <div class="balance">Balance: <span class="total-amount">$300</span></div> -->
+    <div class="list-main">
     <div class="trans-item" *ngFor="let item of analysisList">
       <div class="icon">
         <img [src]="item.icon" alt="" srcset="" />
@@ -30,5 +31,6 @@
       <div class="percentage">{{ item.percentage }}</div>
       <div class="amount">{{ item.amount | currency }}</div>
     </div>
+  </div>
   </div>
 </div>

@@ -20,6 +20,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ChartsModule } from 'ng2-charts';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +33,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     UserAccountComponent,
     NotLogInComponent,
     RegisterComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
     }),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    TooltipModule.forRoot()
   ],
   providers: [TransmitService],
   bootstrap: [AppComponent],

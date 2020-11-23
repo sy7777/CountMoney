@@ -14,6 +14,15 @@
   /* padding-left: 10px; */
   flex: 1.5;
 }
+.current-time{
+
+overflow:hidden;
+/* 超出的文本隐藏 */
+text-overflow:ellipsis;
+/* 溢出用省略号显示 */
+white-space:nowrap;
+/* 溢出不换行 */
+}
 .header-title{
   font-size: 18px;
   font-weight: 700;

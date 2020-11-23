@@ -1,5 +1,5 @@
 <div class="header">
-  <div class="header-start current-time">
+  <div class="header-start current-time" [tooltip]="getDate()">
     <span *ngIf="calendar"
       >{{ startDate | date }} <span *ngIf="endDate">-</span>
       {{ endDate | date }}</span

@@ -92,6 +92,9 @@ export class BillAnalysisComponent implements OnInit, OnDestroy {
           transaction.push(doc.data());
         });
         this.processData(transaction);
+        console.log(transaction
+          );
+
       });
   }
 
@@ -103,15 +106,22 @@ export class BillAnalysisComponent implements OnInit, OnDestroy {
     }> = [];
     let totalAmount = 0;
     arr.forEach((item) => {
-      const found = processedArr.find((value) => value.text === item.text);
+      // console.log(item);
+      const found = processedArr.find((value) => {
+        // console.log(value,"1111");
+        return value.text === item.text;
+      });
+      // console.log(item);
+      // console.log(found);
       totalAmount += Math.abs(item.amount);
       if (found) {
-        found.amount = found.amount + item.amount;
+        found.amount = found.amount + Math.abs(item.amount);
       } else {
         processedArr.push({
           icon: item.icon,
           text: item.text,
           amount: Math.abs(item.amount),
+
         });
       }
     });

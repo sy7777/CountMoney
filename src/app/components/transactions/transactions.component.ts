@@ -46,6 +46,7 @@ export class TransactionsComponent implements OnInit, OnDestroy {
       .subscribe((msg) => {
         this.startDate = msg?.startDate;
         this.endDate = msg?.endDate;
+        this.renderList();
       });
     this.renderList();
   }
@@ -59,8 +60,15 @@ export class TransactionsComponent implements OnInit, OnDestroy {
   }
 
   renderList() {
+    if(this.unsubscribe){
+      this.unsubscribe();
+    }
+    let filter: Transfilter = {
+      startDate: this.startDate,
+      endDate: this.endDate,
+    };
     this.unsubscribe = this.firebase
-      .getTransFromDB(this.currentUser.userId)
+      .getTransFromDB(this.currentUser.userId, filter)
       .onSnapshot((snapshot) => {
         const transaction = [];
         const renderObj = {};
