@@ -3,7 +3,7 @@
   height: calc(100vh - 115px);
   margin: 0 auto;
   box-sizing: border-box;
-  background: #cfd3ce;
+  /* background: #cfd3ce; */
   color: #839b97;
   flex-direction: column;
   /* overflow: auto; */
@@ -69,11 +69,10 @@
   align-items: center;
   padding: 10px;
 }
-.total-amount{
-
+.total-amount {
   justify-self: flex-end;
 }
-.list-main{
+.list-main {
   /* height: calc(100vh - 450px); */
   height: 38vh;
   overflow: auto;

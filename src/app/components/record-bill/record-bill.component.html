@@ -7,17 +7,17 @@
     [useOnPan]="true"
     [swipeable]="true"
     [activeTab]="index"
-    [tabBarActiveTextColor]="'#1890ff'"
     (onTabClick)="onTabClick($event)"
   >
     <TabPane [title]="titleTemplate">
       <ng-template #titleTemplate>
+        <!-- [tabBarBackgroundColor] = "'rgba(131, 155, 151, 0.7)'"    [tabBarActiveTextColor]="'#fff'" -->
         <!-- (onChange)="onChange($event)" -->
         <div>Cash Out</div>
       </ng-template>
       <Grid
         [data]="afterAddOutIconList"
-        [itemStyle]="{ border: '0.5px inset #34626c'}"
+        [itemStyle]="{ border: '0.5px inset #34626c' }"
         (onClick)="showPromptDefault($event, update, addIcon)"
       >
       </Grid>

@@ -10,5 +10,13 @@
 }
 .des{
   height: 10vh;
-  border: 2px dotted #839b97;
+  border: 6px double #839b97;
+  padding: 4px;
+  text-align: center;
+  /* line-height: 6vh; */
+  color: #839b97;
+  font-size: 17px;
+  font-weight: 500;
+  border: 6px double;
+  margin-top: 1vh;
 }
