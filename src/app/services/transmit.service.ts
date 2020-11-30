@@ -4,16 +4,16 @@ import { BehaviorSubject, Subject, Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class TransmitService {
-  dateRange: { startDate: Date; endDate: Date };
-  // public info: any;
+  public dateRange: { startDate: Date; endDate: Date };
   public currentDate: any = new Date().getUTCMonth() + 1;
-
   public infoSource = new Subject<any>();
+
   constructor() {}
   changeInfo(msg: any): void {
     this.dateRange = msg;
     this.infoSource.next(msg);
   }
+
   getPickTime() {
     return this.infoSource.asObservable();
   }

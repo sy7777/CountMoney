@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { TransmitService } from 'src/app/services/transmit.service';
 import { TransListItem } from '../record-bill/record-bill.component';
@@ -25,7 +25,6 @@ export class BillAnalysisComponent implements OnInit, OnDestroy {
     amount: number;
   }> = [];
   tabIndex: number = 0;
-
   chartOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -40,8 +39,6 @@ export class BillAnalysisComponent implements OnInit, OnDestroy {
   plugins = [pluginDataLabels];
   chartLabels: Label[] = [];
   chartData: ChartDataSets[] = [];
-  // chartData: SingleDataSet = [];
-  // chartData: MultiDataSet = [];
   constructor(
     private service: TransmitService,
     private firebase: FirebaseService
@@ -92,9 +89,7 @@ export class BillAnalysisComponent implements OnInit, OnDestroy {
           transaction.push(doc.data());
         });
         this.processData(transaction);
-        console.log(transaction
-          );
-
+        // console.log(transaction);
       });
   }
 
@@ -121,10 +116,10 @@ export class BillAnalysisComponent implements OnInit, OnDestroy {
           icon: item.icon,
           text: item.text,
           amount: Math.abs(item.amount),
-
         });
       }
     });
+    console.log(this.totalAmount);
     this.chartLabels = processedArr.map((item) => item.text);
     this.chartData = [{ data: processedArr.map((item) => item.amount) }];
     this.analysisList = processedArr.map((item) => ({

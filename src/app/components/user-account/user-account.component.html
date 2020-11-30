@@ -21,6 +21,22 @@
     <div class="user-description">{{ user.des || "Lazy..." }}</div>
   </div>
 </div>
+<div class="main" >
+  <h4 (click)="editBudget(budget)">Set Your Budget <span *ngIf="budgetNum">:{{budgetNum}}</span></h4>
+  <div class="circle">
+    <div class="bar-chart" >
+      <canvas
+        baseChart
+        [datasets]="chartData"
+        [labels]="chartLabels"
+        [chartType]="'doughnut'"
+        [options]="chartOptions"
+        [plugins]="plugins"
+      >
+      </canvas>
+    </div>
+  </div>
+</div>
 <ng-template #upload>
   <ImagePicker
     [files]="files"
@@ -35,9 +51,7 @@
   <InputItem
     [clear]="true"
     [(ngModel)]="username"
-    (onChange)="inputChange($event)"
     [placeholder]="'Enter your name'"
-    [focus]="autoFocus"
     [content]="'Name:'"
   ></InputItem>
   <TextareaItem
@@ -46,7 +60,16 @@
     [title]="'Desciption:'"
     [autoHeight]="true"
     [(ngModel)]="userDescription"
-    (onChange)="inputChange($event)"
     [autoHeight]="true"
   ></TextareaItem>
+</ng-template>
+<ng-template #budget>
+  <InputItem
+    [clear]="true"
+    [(ngModel)]="budgetNum"
+    [content]="'Number:'"
+    [type]="'money'"
+    [placeholder]="'money format'"
+    [focus]="numberFocus"
+  ></InputItem>
 </ng-template>

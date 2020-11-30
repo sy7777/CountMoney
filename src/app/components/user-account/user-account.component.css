@@ -29,4 +29,19 @@
   width: 20px;
   padding: 4px;
 }
+.main{
+  margin: 0 auto;
+  /* padding: 7px; */
+  text-align: center;
+  margin-top: 27px;
+}
+.main h4{
+  background-color: #d6d2c4;
+  height: 60px;
+  line-height: 60px;
+}
+.bar-chart{
+  height: 50vh;
+  width: 100%;
+}
 

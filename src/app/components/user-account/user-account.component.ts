@@ -2,7 +2,9 @@ import { Component, OnInit, TemplateRef, OnDestroy } from '@angular/core';
 import { ModalRef, ModalService, ToastService } from 'ng-zorro-antd-mobile';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { TransmitService } from 'src/app/services/transmit.service';
-import { TransListItem } from '../record-bill/record-bill.component';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import { ChartDataSets, ChartOptions } from 'chart.js';
+import { Label } from 'ng2-charts/lib/base-chart.directive';
 const data = [];
 export interface User {
   avatar?: string;
@@ -10,6 +12,7 @@ export interface User {
   des?: string;
   password?: string;
   userId?: string;
+  budget?: string;
 }
 export interface UserFilter {
   username?: string;
@@ -22,19 +25,21 @@ export interface UserFilter {
   styleUrls: ['./user-account.component.css'],
 })
 export class UserAccountComponent implements OnInit, OnDestroy {
-  autoFocus = { focus: true, date: new Date() };
-  constructor(
-    private _modal: ModalService,
-    private service: TransmitService,
-    private firebase: FirebaseService,
-    private _toast: ToastService
-  ) {}
-  ngOnDestroy(): void {
-    if (this.unSubscribe) {
-      this.unSubscribe();
-    }
-  }
-  unSubscribe: any;
+  chartOptions: ChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      labels: {
+        render: 'percentage',
+        // fontColor: ['green', 'white', 'red'],
+        precision: 2,
+      },
+    },
+  };
+  plugins = [pluginDataLabels];
+  chartLabels: Label[] = [];
+  chartData: ChartDataSets[] = [];
+  // unSubscribe: any;
   files = data.slice(0);
   multiple = false;
   modalRef: ModalRef;
@@ -42,10 +47,25 @@ export class UserAccountComponent implements OnInit, OnDestroy {
   imgUrl: string =
     'https://zos.alipayobjects.com/rmsportal/hqQWgTXdrlmVVYi.jpeg';
   username: string;
+  budgetNum: string;
   userDescription: string;
+  constructor(
+    private _modal: ModalService,
+    private service: TransmitService,
+    private firebase: FirebaseService,
+    private _toast: ToastService
+  ) {}
+  ngOnDestroy(): void {
+    // if (this.unSubscribe) {
+    //   this.unSubscribe();
+    // }
+  }
+
   ngOnInit(): void {
     this.user = this.service.getTrans('users');
-    // console.log(defaltuser);
+    // console.log(this.user);
+    this.budgetNum = this.user.budget;
+    this.renderPieChart();
   }
 
   async fileChange(params) {
@@ -62,7 +82,6 @@ export class UserAccountComponent implements OnInit, OnDestroy {
       if (preImgUrl) {
         this.firebase.delPreImg(preImgUrl);
       }
-
       this.user = this.service.getTrans('users');
     }
   }
@@ -93,20 +112,62 @@ export class UserAccountComponent implements OnInit, OnDestroy {
             } else {
               this._toast.fail("You don't change anything!", 3000);
             }
-            // await this.firebase.updateUser({
-            //   userId:this.user.userId,
-            //   username: this.username,
-            //   des:this.userDescription
-            // })
             this.user = this.service.getTrans('users');
           },
         },
       ],
       'default'
     );
-    // console.log(tem);
   }
-  inputChange(event) {
-    // console.log(event);
+  numberFocus = {
+    focus: false,
+  };
+  editBudget(tem: TemplateRef<any>) {
+    this.modalRef = this._modal.alert(
+      'Set Your Budget',
+      tem,
+      [
+        { text: 'Cancel' },
+        {
+          text: 'Submit',
+          onPress: () => {
+            if (this.budgetNum) {
+              this.service.setTrans('users', {
+                ...this.user,
+                budget: this.budgetNum,
+              });
+              this.user = this.service.getTrans('users');
+            } else {
+              this._toast.offline('You should enter a number', 3000);
+            }
+            this.renderPieChart();
+          },
+        },
+      ],
+      'default'
+    );
+  }
+  renderPieChart() {
+    const amountArr = [];
+    let totalMoney = 0;
+    this.firebase.getTransFromDB(this.user.userId).onSnapshot((snap) => {
+      snap.forEach((value) => {
+        amountArr.push(value.data().amount);
+      });
+      // console.log(amountArr);
+      amountArr.forEach((item) => {
+        totalMoney += item;
+      });
+      // console.log(totalMoney);
+      const processedArr = [
+        { text: 'Used Money', amount: totalMoney },
+        {
+          text: 'Your Budget Left',
+          amount: parseFloat(this.budgetNum) + totalMoney,
+        },
+      ];
+      this.chartLabels = processedArr.map((item) => item.text);
+      this.chartData = [{ data: processedArr.map((item) => item.amount) }];
+    });
   }
 }
