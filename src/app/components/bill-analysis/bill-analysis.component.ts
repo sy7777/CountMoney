@@ -119,7 +119,6 @@ export class BillAnalysisComponent implements OnInit, OnDestroy {
         });
       }
     });
-    console.log(this.totalAmount);
     this.chartLabels = processedArr.map((item) => item.text);
     this.chartData = [{ data: processedArr.map((item) => item.amount) }];
     this.analysisList = processedArr.map((item) => ({
