@@ -7,4 +7,6 @@ export const environment = {
   storageBucket: 'gigi-294903.appspot.com',
   messagingSenderId: '600746760661',
   appId: '1:600746760661:web:872557ca7fc7df2910055c',
+  email:"piecesy7@gmail.com",
+  password:"Cinderella77"
 };

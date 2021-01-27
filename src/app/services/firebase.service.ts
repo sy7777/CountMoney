@@ -174,6 +174,7 @@ export class FirebaseService {
     }
     this.fireStore = firebase.firestore();
     this.fireStorage = firebase.storage();
+    firebase.auth().signInWithEmailAndPassword(environment.email, environment.password)
   }
 
   getImgFromDB() {
