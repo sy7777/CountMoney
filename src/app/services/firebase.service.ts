@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/storage';
+import 'firebase/auth';
 import { ToastService } from 'ng-zorro-antd-mobile';
 import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';

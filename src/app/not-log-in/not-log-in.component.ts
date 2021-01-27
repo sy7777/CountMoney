@@ -37,7 +37,7 @@ export class NotLogInComponent implements OnInit, OnDestroy {
   }
 
   afterChange(event) {
-    console.log(event);
+    // console.log(event);
     this.currentDisplayDes = this.des[event]
   }
 
