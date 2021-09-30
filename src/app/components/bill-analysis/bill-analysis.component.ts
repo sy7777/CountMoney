@@ -133,4 +133,5 @@ export class BillAnalysisComponent implements OnInit, OnDestroy {
     this.tabIndex = event.selectedIndex;
     this.renderAnalysisList();
   }
+  
 }
