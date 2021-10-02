@@ -7,6 +7,8 @@ import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts/lib/base-chart.directive';
 import { Transfilter } from '../transactions/transactions.component';
+import { switchMap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-bill-analysis',
   templateUrl: './bill-analysis.component.html',
@@ -39,15 +41,15 @@ export class BillAnalysisComponent implements OnInit, OnDestroy {
   plugins = [pluginDataLabels];
   chartLabels: Label[] = [];
   chartData: ChartDataSets[] = [];
+  subscription: Subscription;
   constructor(
     private service: TransmitService,
     private firebase: FirebaseService
   ) {}
 
   ngOnDestroy(): void {
-    if (this.unsubscribe) {
-      this.unsubscribe();
-    }
+      this.unsubscribe?.();
+    // this.subscription?.unsubscribe();
   }
   ngOnInit(): void {
     this.currentUser = this.service.getTrans('users');
@@ -60,6 +62,26 @@ export class BillAnalysisComponent implements OnInit, OnDestroy {
         this.endDate = msg?.endDate;
         this.renderAnalysisList();
       });
+    this.service.getUserId().subscribe((userID)=>{
+      console.log(userID);
+      this.service.getUserBank(userID).subscribe((bankID)=>{
+        console.log(bankID);
+        this.service.getUserBanlance(bankID).subscribe((balance)=>{
+          console.log(balance);
+          
+        })
+      });
+    });
+    
+    this.service.getUserId()
+    .pipe(
+      switchMap(userID=> this.service.getUserBank(userID)),
+      switchMap(bankID=> this.service.getUserBanlance(bankID))
+      ).subscribe(balance=>console.log(balance)
+      );
+
+    this.subscription =this.service.mock().subscribe(num=>console.log(num)
+    )
   }
   renderAnalysisList() {
     let filter: Transfilter;
